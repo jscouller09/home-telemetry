@@ -1,13 +1,17 @@
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Name:         Xbee Hub
-# Purpose:      Micropython code for Xbee hub
+# Purpose:      Code for Xbee hub running via Python Digi Xbee Library (API mode 2)
 #
 # Author:       james.scouller
 #
-# Created:      06/02/2022
+# Created:      10/02/2022
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # global imports
-import xbee
+from digi.xbee.devices import ZigBeeDevice, RemoteZigBeeDevice
+from digi.xbee.util import utils
+from digi.xbee.models.address import XBee64BitAddress
+import threading
+from datetime import datetime
 import time
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # custom module imports
@@ -15,53 +19,27 @@ import time
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # main code
 
-
-def network_status():
-    # If the value of AI is non zero, the module is not connected to a network
-    return xbee.atcmd("AI")
-
-
-def format_eui64(addr):
-    return ':'.join('%02x' % b for b in addr)
-
-
-def format_packet(p):
-    type = 'Broadcast' if p['broadcast'] else 'Unicast'
-    print("%s message from EUI-64 %s (network 0x%04X)" % (type, format_eui64(p['sender_eui64']), p['sender_nwk']))
-    print(" from EP 0x%02X to EP 0x%02X, Cluster 0x%04X, Profile 0x%04X:" % (p['source_ep'], p['dest_ep'], p['cluster'], p['profile']))
-    print(p['payload'])
+def data_received(xbee_msg):
+    received_ts = datetime.fromtimestamp(xbee_msg.timestamp).strftime("%d/%m/%Y %H:%M:%S")
+    data = xbee_msg.data.decode().strip('\x00')
+    add_64 = xbee_msg.remote_device.get_64bit_addr()
+    str_add = utils.hex_to_string(add_64.address).replace(' ', '')
+    # check what to do with the kind of message received
+    print('{} -> Received {} from {}'.format(received_ts, data, str_add))
 
 
-print("Forming a new Zigbee network as a coordinator...")
-while network_status() != 0:
-    time.sleep(0.1)
-print("Network Established\n")
-
-print("Waiting for a remote node to join...")
-node_list = []
-while len(node_list) == 0:
-    # Perform a network discovery until the router joins
-    node_list = list(xbee.discover())
-print("Remote node found, transmitting data")
-
-node = node_list[0]
-dest_addr = node['sender_nwk']  # using 16 bit addressing
-dest_node_id = node['node_id']
-
-# Start the ON/OFF loop
-print("Starting ON/OFF loop...")
-print("Hit CTRL+C to cancel")
-while True:
-    # turn on
-    payload_data = "ON"
-    print("Sending \"{}\" to {}".format(payload_data, dest_node_id))
-    xbee.transmit(dest_addr, payload_data)
-    print('Sleeping for 5 seconds...')
-    time.sleep(5)
-
-    # turn off
-    payload_data = "OFF"
-    print("Sending \"{}\" to {}".format(payload_data, dest_node_id))
-    xbee.transmit(dest_addr, payload_data)
-    print('Sleeping for 5 seconds...')
-    time.sleep(5)
+serial_port = 'COM3'
+baudrate = 115200
+dest_add = '0013A20041BB7AFC'
+local_xbee = ZigBeeDevice(serial_port, baudrate)
+remote_xbee = RemoteZigBeeDevice(local_xbee, XBee64BitAddress.from_hex_string(dest_add))
+print('Connecting to local Xbee on {} at {} baud...'.format(serial_port, baudrate))
+local_xbee.open()
+local_xbee.add_data_received_callback(lambda x: threading.Thread(target=data_received, args=(x,)).start())
+print('Connected! Sending message to {}'.format(dest_add))
+# local_xbee.send_data_broadcast('Hello XBee World!')
+local_xbee.send_data(remote_xbee, 'Hello test node!')
+time.sleep(10)
+print('Terminating connection to Xbee...')
+local_xbee.close()
+print('Done!')
