@@ -17,7 +17,7 @@ from machine import Pin
 # main code
 
 # time to send signal to relay for
-pulse_s = 1
+pulse_s = 0.01
 # 2 control pins and 4 relay terminals required per solenoid
 control_pins = {'D0': None,
                 'D1': None,
