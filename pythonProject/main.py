@@ -19,19 +19,20 @@ from machine import Pin
 # time to send signal to relay for
 pulse_s = 0.01
 # 2 control pins and 4 relay terminals required per solenoid
+# p1-p2 used for reading supply/battery voltages
 control_pins = {'D0': None,
                 'D1': None,
                 'D2': None,
                 'D3': None,
                 'D4': None,
-                'D8': None,
-                'P1': None,
-                'P2': None}
+                'D6': None,
+                'D7': None,
+                'D8': None}
 # register solenoid state as False = Shut = pins pulled LOW
 solenoids = {'S1': {'open': False, 'open_pin': 'D0', 'close_pin': 'D1'},
              'S2': {'open': False, 'open_pin': 'D2', 'close_pin': 'D3'},
-             'S3': {'open': False, 'open_pin': 'D4', 'close_pin': 'D8'},
-             'S4': {'open': False, 'open_pin': 'P1', 'close_pin': 'P2'}}
+             'S3': {'open': False, 'open_pin': 'D6', 'close_pin': 'D7'},
+             'S4': {'open': False, 'open_pin': 'D4', 'close_pin': 'D8'}}
 
 print(" +--------------------------------------+")
 print(" | XBee MicroPython Receive Instruction |")
