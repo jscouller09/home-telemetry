@@ -3,8 +3,8 @@ from digi.xbee.devices import ZigBeeDevice, RemoteZigBeeDevice
 from digi.xbee.util import utils
 from digi.xbee.models.address import XBee64BitAddress
 from datetime import datetime
-import threading
 import time
+import threading
 
 # setup logging
 logging.basicConfig()

@@ -1,5 +1,6 @@
 import logging
 import sys
+from datetime import datetime, timedelta
 
 # setup logging
 logging.basicConfig()
@@ -56,3 +57,16 @@ def toggle_sprinkler(**kwargs):
     if all([radio_address, solenoid, state, reply]):
         # setup asyncronous task to connect to the local xbee hub, send the message, await the reply and then disconnect
         task.executor(hub.send_message, radio_address, '{}-{}'.format(state, solenoid), '{} {}'.format(solenoid, reply))
+        if state == 'ON':
+            # setup asycronous task to send an off signal after the specified time
+            num_mins = int(float(input_number.sprinker_timer))
+            send_time = datetime.now() + timedelta(minutes=num_mins)
+            logger.debug('delaying turn off for {} minutes until {:%Y/%m/%d %H:%M:%S}'.format(num_mins, send_time))
+            trig_info = task.wait_until(
+                    state_trigger="{} == 'off'".format(kwargs['var_name']),
+                    timeout=60.0 * float(input_number.sprinker_timer)
+                )
+            if trig_info["trigger_type"] == "timeout":
+                # timeout elapsed without the solenoid being shut off manually
+                task.executor(hub.schedule_message, send_time, radio_address, '{}-{}'.format('OFF', solenoid), '{} {}'.format(solenoid, 'CLOSED'))
+
