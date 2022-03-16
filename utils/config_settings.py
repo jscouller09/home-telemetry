@@ -31,6 +31,7 @@ class ConfigSettings:
 
     def update_json_fp(self, new_json_fp):
         logging.debug('{} update_json_fp called'.format(__name__))
+        logging.debug('new filepath: {}'.format(new_json_fp))
         # update the stored JSON file path to the new supplied one
         self.json_fp = new_json_fp
 
@@ -52,7 +53,7 @@ class ConfigSettings:
         with open(self.json_fp, 'w') as file:
             config_dict = dict([(key, val) for (key, val) in self.CS.__dict__.items() if '__' not in key])
             json.dump(config_dict, file, indent=4)
-            logging.debug('wrote config settings to {}'.format(os.path.basename(self.json_fp)))
+            logging.debug('wrote config settings to {}'.format(self.json_fp))
 
     def __parse_config_dict__(self, config_dict):
         logging.debug('{} __parse_config_dict__ called'.format(__name__))

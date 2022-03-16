@@ -36,7 +36,6 @@ class Project(ConfigSettings):
         self.out_dir = self.__make_folder__(self.cwd, 'output')
         self.proj_dir = self.__make_folder__(self.out_dir, self.proj_name_clean)
         self.log_dir = self.__make_folder__(self.proj_dir, 'logs')
-        self.data_dir = self.__make_folder__(self.proj_dir, 'data')
 
         # update config JSON file path and dump a copy to project dir
         self.update_json_fp(os.path.join(self.proj_dir, 'config_settings.json'))

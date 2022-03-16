@@ -11,6 +11,7 @@ from datetime import datetime
 import traceback
 import sys
 import logging
+import signal
 # ----------------------------------------------------------------------------------------------------------------------
 # custom module imports
 
@@ -59,7 +60,7 @@ class PrintWrapper:
         print("{msg_prefix}| {0:{ts_width}}{1:{fill}{align}{width}s}|".format('', msg, msg_prefix=msg_prefix, fill=' ', align='<', width=self.max_width - self.lenTs - 8, ts_width=self.lenTs + 5), **kwargs)
 
     def error(self, msg):
-        print()
+        self.normal()
         self.header('ERROR REPORT')
         # print("\n+{0:{fill}{align}{width}s}+".format('ERROR REPORT', fill='-', align='^', width=self.max_width - 2))
         print("| {0:{fill}{align}{width}s}|".format(msg, fill=' ', align='<', width=self.max_width - 3))
@@ -92,8 +93,11 @@ class PrintWrapper:
         message_body += " {0}\n".format(err)
         errS = self.__shorten_left(err, self.max_width - 5)
         print("| {0:{fill}{align}{width}s}|".format(errS, fill=' ', align='<', width=self.max_width - 3))
-        print("+{0:{fill}{align}{width}s}+".format('', fill='-', align='^', width=self.max_width - 2))
-        raise SystemExit()
+        # print("+{0:{fill}{align}{width}s}+".format('', fill='-', align='^', width=self.max_width - 2))
+        # comment out if you want to suppress trace
+        self.header()
+        traceback.print_exc(file=sys.stdout)
+        signal.raise_signal(signal.SIGTERM)
 
     @process_special_characters
     def warn(self, msg='', trim='right', msg_prefix='', **kwargs):
