@@ -44,20 +44,20 @@ def toggle_sprinkler(**kwargs):
     # determine message to send and expected reply
     if kwargs['value'] == 'off' and kwargs['old_value'] == 'on':
         # turn off
-        state = 'OFF'
+        status = 'OFF'
         reply = 'CLOSED'
     elif kwargs['value'] == 'on' and kwargs['old_value'] == 'off':
         # turn on
-        state = 'ON'
+        status = 'ON'
         reply = 'OPENED'
     else:
-        logger.debug('could not determine which state and reply to use!')
-        state = False
+        logger.debug('could not determine which status and reply to use!')
+        status = False
         reply = False
-    if all([radio_address, solenoid, state, reply]):
+    if all([radio_address, solenoid, status, reply]):
         # setup asyncronous task to connect to the local xbee hub, send the message, await the reply and then disconnect
-        task.executor(hub.send_message, radio_address, '{}-{}'.format(state, solenoid), '{} {}'.format(solenoid, reply))
-        if state == 'ON':
+        task.executor(hub.send_message, radio_address, '{}-{}'.format(status, solenoid), '{} {}'.format(solenoid, reply))
+        if status == 'ON':
             # setup asycronous task to send an off signal after the specified time
             num_mins = int(float(input_number.sprinker_timer))
             send_time = datetime.now() + timedelta(minutes=num_mins)
