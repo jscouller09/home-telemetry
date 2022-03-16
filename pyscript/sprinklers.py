@@ -28,19 +28,15 @@ def toggle_sprinkler(**kwargs):
     if 'sprinkler_1' in kwargs['var_name']:
         radio_address = '0013A20041BB7AFC'
         solenoid = 'S1'
-        switch = input_boolean.sprinkler_1
     elif 'sprinkler_2' in kwargs['var_name']:
         radio_address = '0013A20041BB7AFC'
         solenoid = 'S2'
-        switch = input_boolean.sprinkler_2
     elif 'sprinkler_3' in kwargs['var_name']:
         radio_address = '0013A20041BB7AFC'
         solenoid = 'S3'
-        switch = input_boolean.sprinkler_3
     elif 'sprinkler_4' in kwargs['var_name']:
         radio_address = '0013A20041BB7AFC'
         solenoid = 'S4'
-        switch = input_boolean.sprinkler_4
     else:
         logger.debug('could not determine which sprinkler and radio address to use!')
         radio_address = False
@@ -72,6 +68,5 @@ def toggle_sprinkler(**kwargs):
                 )
             if trig_info["trigger_type"] == "timeout":
                 # timeout elapsed without the solenoid being shut off manually
-                switch = 'off'
+                state.set(kwargs['var_name'], 'off')
                 #task.executor(hub.schedule_message, send_time, radio_address, '{}-{}'.format('OFF', solenoid), '{} {}'.format(solenoid, 'CLOSED'))
-
