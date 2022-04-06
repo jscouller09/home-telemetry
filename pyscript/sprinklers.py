@@ -26,17 +26,17 @@ def toggle_sprinkler(**kwargs):
     # pick right destination radion and solenoid valve based on config
     logger.debug('toggle_sprinkler called with kwargs: {}'.format(kwargs))
     if 'sprinkler_1' in kwargs['var_name']:
-        radio_address = '0013A20041BB7AFC'
+        radio_address = '0013A20041B9EB71'
         solenoid = 'S1'
     elif 'sprinkler_2' in kwargs['var_name']:
-        radio_address = '0013A20041BB7AFC'
+        radio_address = '0013A20041B9EB71'
         solenoid = 'S2'
     elif 'sprinkler_3' in kwargs['var_name']:
-        radio_address = '0013A20041BB7AFC'
+        radio_address = '0013A20041B9EB71'
         solenoid = 'S3'
     elif 'sprinkler_4' in kwargs['var_name']:
         radio_address = '0013A20041BB7AFC'
-        solenoid = 'S4'
+        solenoid = 'S1'
     else:
         logger.debug('could not determine which sprinkler and radio address to use!')
         radio_address = False
