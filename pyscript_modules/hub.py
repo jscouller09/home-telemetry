@@ -60,7 +60,7 @@ def __data_received(xbee_msg):
             supply_v = match.group(1)
     logger.debug('{} -> received {} from {}'.format(received_ts, data, str_add))
     global reply
-    reply = ''.format(data)
+    reply = data
 
 
 def connect_xb():
