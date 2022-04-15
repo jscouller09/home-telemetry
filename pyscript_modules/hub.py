@@ -5,6 +5,7 @@ from digi.xbee.models.address import XBee64BitAddress
 from datetime import datetime
 import time
 import threading
+import re
 
 # setup logging
 logging.basicConfig()
@@ -17,6 +18,8 @@ baudrate = 115200
 local_xbee = ZigBeeDevice(serial_port, baudrate)
 waiter_reply = threading.Event()
 expected_reply = None
+supply_v = ''
+reply = ''
 
 
 def send_message(dest_add, msg, await_reply=None):
@@ -35,6 +38,9 @@ def send_message(dest_add, msg, await_reply=None):
     else:
         logger.debug('waited 20s to ensure message went through')
     disconnect_xb()
+    global supply_v
+    global reply
+    return supply_v, reply
 
 
 def __data_received(xbee_msg):
@@ -42,11 +48,19 @@ def __data_received(xbee_msg):
     data = xbee_msg.data.decode().strip('\x00')
     add_64 = xbee_msg.remote_device.get_64bit_addr()
     str_add = utils.hex_to_string(add_64.address).replace(' ', '')
+
     # check who message was from and the contents
-    if expected_reply and '{}:{}'.format(str_add, data) == expected_reply:
+    if expected_reply and (expected_reply in '{}:{}'.format(str_add, data)):
         # let waiting thread know we got the correct reply
         waiter_reply.set()
+        # extract supply voltage measurement if present
+        match = re.search('SUPPLY\: (\d{1,2}.\d{3})V', data)
+        if match:
+            global supply_v
+            supply_v = match.group(1)
     logger.debug('{} -> received {} from {}'.format(received_ts, data, str_add))
+    global reply
+    reply = ''.format(data)
 
 
 def connect_xb():

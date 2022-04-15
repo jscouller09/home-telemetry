@@ -13,6 +13,12 @@ logger.debug(sys.path)
 
 import hub
 
+# setup state vars
+state.set('pyscript.sprinkler_1', 'off', supply_v='', solenoid='S1', radio_address='0013A20041B9EB71', last_off=None, last_on=None)
+state.set('pyscript.sprinkler_2', 'off', supply_v='', solenoid='S2', radio_address='0013A20041B9EB71', last_off=None, last_on=None)
+state.set('pyscript.sprinkler_3', 'off', supply_v='', solenoid='S3', radio_address='0013A20041B9EB71', last_off=None, last_on=None)
+state.set('pyscript.sprinkler_4', 'off', supply_v='', solenoid='S4', radio_address='0013A20041B9EB71', last_off=None, last_on=None)
+
 # register state trigger for sprinkers
 @state_trigger("input_boolean.sprinkler_1== 'on'")
 @state_trigger("input_boolean.sprinkler_1== 'off'")
@@ -25,18 +31,11 @@ import hub
 def toggle_sprinkler(**kwargs):
     # pick right destination radion and solenoid valve based on config
     logger.debug('toggle_sprinkler called with kwargs: {}'.format(kwargs))
-    if 'sprinkler_1' in kwargs['var_name']:
-        radio_address = '0013A20041B9EB71'
-        solenoid = 'S1'
-    elif 'sprinkler_2' in kwargs['var_name']:
-        radio_address = '0013A20041B9EB71'
-        solenoid = 'S2'
-    elif 'sprinkler_3' in kwargs['var_name']:
-        radio_address = '0013A20041B9EB71'
-        solenoid = 'S3'
-    elif 'sprinkler_4' in kwargs['var_name']:
-        radio_address = '0013A20041BB7AFC'
-        solenoid = 'S1'
+    state_var_name = "pyscript.{}".format(kwargs['var_name'].split('.')[1])
+    state_var = state.get(state_var_name)
+    if 'sprinkler_' in kwargs['var_name']:
+        radio_address = state_var.radio_address
+        solenoid = state_var.solenoid
     else:
         logger.debug('could not determine which sprinkler and radio address to use!')
         radio_address = False
@@ -56,8 +55,15 @@ def toggle_sprinkler(**kwargs):
         reply = False
     if all([radio_address, solenoid, status, reply]):
         # setup asyncronous task to connect to the local xbee hub, send the message, await the reply and then disconnect
-        task.executor(hub.send_message, radio_address, '{}-{}'.format(status, solenoid), '{} {}'.format(solenoid, reply))
+        supply_v, full_reply = task.executor(hub.send_message, radio_address, '{}-{}'.format(status, solenoid), '{} {}'.format(solenoid, reply))
+        logger.debug('response was: {}'.format(full_reply))
+        logger.debug('supply V reported was: {}'.format(supply_v))
+        if supply_v and supply_v != '':
+            state_var.supply_v = supply_v
         if status == 'ON':
+            state_var.last_on=state.get(kwargs['var_name']).last_changed
+            # update state variable
+            state.set(state_var_name, state.get(kwargs['var_name']), supply_v=state_var.supply_v, solenoid=state_var.solenoid, radio_address=state_var.radio_address, last_off=state_var.last_off, last_on=state_var.last_on)
             # setup asycronous task to send an off signal after the specified time
             num_mins = int(float(input_number.sprinker_timer))
             send_time = datetime.now() + timedelta(minutes=num_mins)
@@ -69,4 +75,7 @@ def toggle_sprinkler(**kwargs):
             if trig_info["trigger_type"] == "timeout":
                 # timeout elapsed without the solenoid being shut off manually
                 state.set(kwargs['var_name'], 'off')
-                #task.executor(hub.schedule_message, send_time, radio_address, '{}-{}'.format('OFF', solenoid), '{} {}'.format(solenoid, 'CLOSED'))
+        else:
+            state_var.last_off=state.get(kwargs['var_name']).last_changed
+            # update state variable
+            state.set(state_var_name, state.get(kwargs['var_name']), supply_v=state_var.supply_v, solenoid=state_var.solenoid, radio_address=state_var.radio_address, last_off=state_var.last_off, last_on=state_var.last_on)

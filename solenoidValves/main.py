@@ -29,6 +29,7 @@ control_pins = {'D0': None,
                 'D7': None,
                 'D4': None,
                 'D8': None}
+# vin_pin = Pin('P2', Pin.ANALOG)
 # register solenoid state as False = Shut = pins pulled LOW
 solenoids = {'S1': {'open': False, 'open_pin': 'D0', 'close_pin': 'D2'},
              'S2': {'open': False, 'open_pin': 'D3', 'close_pin': 'D6'},
@@ -43,6 +44,7 @@ def print_pin_status():
     print('Current pin states:')
     for pin_num, p in control_pins.items():
         print('\t{}: {}'.format(pin_num, p.value()))
+    # print('\tP2: {}'.format(vin_pin.value()))
 
 def print_solenoid_status():
     print('Solenoid states:')
@@ -115,11 +117,11 @@ while True:
         if msg[0:4] == 'OFF-':
             num = msg[4::]
             close_solenoid(num)
-            response = '{} CLOSED'.format(num)
+            response = '{} CLOSED. SUPPLY: {:02.3f}V'.format(num, 0)
         elif msg[0:3] == 'ON-':
             num = msg[3::]
             open_solenoid(num)
-            response = '{} OPENED'.format(num)
+            response = '{} OPENED. SUPPLY: {:02.3f}V'.format(num, 0)
         else:
             response = '"{}" IS NOT A VALID MESSAGE'.format(msg)
 
