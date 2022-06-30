@@ -14,10 +14,10 @@ logger.debug(sys.path)
 import hub
 
 # setup state vars
-state.set('pyscript.sprinkler_1', 'off', supply_v='', solenoid='S1', radio_address='0013A20041B9EB71', last_off=None, last_on=None)
-state.set('pyscript.sprinkler_2', 'off', supply_v='', solenoid='S2', radio_address='0013A20041B9EB71', last_off=None, last_on=None)
-state.set('pyscript.sprinkler_3', 'off', supply_v='', solenoid='S3', radio_address='0013A20041B9EB71', last_off=None, last_on=None)
-state.set('pyscript.sprinkler_4', 'off', supply_v='', solenoid='S4', radio_address='0013A20041B9EB71', last_off=None, last_on=None)
+state.set('pyscript.sprinkler_1', 'off', supply_v='', solenoid='S1', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
+state.set('pyscript.sprinkler_2', 'off', supply_v='', solenoid='S2', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
+state.set('pyscript.sprinkler_3', 'off', supply_v='', solenoid='S3', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
+state.set('pyscript.sprinkler_4', 'off', supply_v='', solenoid='S4', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
 
 # register state trigger for sprinkers
 @state_trigger("input_boolean.sprinkler_1== 'on'")
