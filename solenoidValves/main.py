@@ -17,7 +17,7 @@ from machine import Pin
 # main code
 
 # time to send signal to relay for
-pulse_s = 2 # 0.01 - 3 seconds or so depending on the solenoid valve
+pulse_s = 0.01 # depends on the solenoid valve
 # 2 control pins and 4 relay terminals required per solenoid
 # P2 used for reading supply/battery voltage
 # D1 and P1 reserved for I2C devices in the future
@@ -29,7 +29,8 @@ control_pins = {'D0': None,
                 'D7': None,
                 'D4': None,
                 'D8': None}
-# vin_pin = Pin('P2', Pin.ANALOG)
+#vin_pin = Pin('P2', Pin.ANALOG)
+vin_pin = Pin('P2')
 # register solenoid state as False = Shut = pins pulled LOW
 solenoids = {'S1': {'open': False, 'open_pin': 'D0', 'close_pin': 'D2'},
              'S2': {'open': False, 'open_pin': 'D3', 'close_pin': 'D6'},
@@ -44,7 +45,7 @@ def print_pin_status():
     print('Current pin states:')
     for pin_num, p in control_pins.items():
         print('\t{}: {}'.format(pin_num, p.value()))
-    # print('\tP2: {}'.format(vin_pin.value()))
+    print('\tP2: {}'.format(vin_pin.value()))
 
 def print_solenoid_status():
     print('Solenoid states:')
@@ -91,6 +92,11 @@ def close_solenoid(num):
     print('Solenoid {} closed'.format(num))
     print_solenoid_status()
 
+def get_supply_voltage():
+    supply_v = vin_pin.value()
+    print('Supply V: {:02.3f}V'.format(supply_v))
+    return supply_v
+
 print('Setting up output pins...')
 for pin_num in control_pins.keys():
     setup_output_pins(pin_num)
@@ -117,11 +123,13 @@ while True:
         if msg[0:4] == 'OFF-':
             num = msg[4::]
             close_solenoid(num)
-            response = '{} CLOSED. SUPPLY: {:02.3f}V'.format(num, 0)
+            response = '{} CLOSED. SUPPLY: {:02.3f}V'.format(num, get_supply_voltage())
         elif msg[0:3] == 'ON-':
             num = msg[3::]
             open_solenoid(num)
-            response = '{} OPENED. SUPPLY: {:02.3f}V'.format(num, 0)
+            response = '{} OPENED. SUPPLY: {:02.3f}V'.format(num, get_supply_voltage())
+        elif msg[0:6] == 'SUPPLY':
+            response = 'SUPPLY: {:02.3f}V'.format(get_supply_voltage())
         else:
             response = '"{}" IS NOT A VALID MESSAGE'.format(msg)
 

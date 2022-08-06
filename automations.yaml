@@ -1,0 +1,78 @@
+- id: '1658636493104'
+  alias: Turn OFF timer for all heaters
+  description: Automatically turn off heaters after the specified time has elapsed
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: 46d18f9957b76230716414583e56126d
+    entity_id: switch.bedroom_heater
+    domain: switch
+  - platform: device
+    type: turned_on
+    device_id: f5772a00b01ad1ef01d21a9f93f2a0cd
+    entity_id: switch.nursery_heater
+    domain: switch
+  - platform: device
+    type: turned_on
+    device_id: a315e82ff76dc2c76c68182e55e94aca
+    entity_id: switch.study_heater
+    domain: switch
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      title: Home Assistant
+      message: Turned on {{ trigger.to_state.name }} for {{ states('input_number.heater_timer')|int
+        }} minutes entity_id - '{{trigger.entity_id}}'
+    enabled: false
+  - delay: 00:{{ states('input_number.heater_timer')|int }}:00
+  - service: switch.turn_off
+    data:
+      entity_id: '{{trigger.entity_id}}'
+  - service: notify.notify
+    data:
+      title: Home Assistant
+      message: Turned off {{ trigger.to_state.name }}
+    enabled: false
+  mode: parallel
+  max: 3
+- id: '1658641420308'
+  alias: Turn ON  bedroom heater at 9:00 pm for 1 hour on cold nights if we are home
+  description: Turn on bedroom heating at 9:00 pm for 1 hour if temperature is below
+    11°C and either of our phones are at home
+  trigger:
+  - platform: time
+    at: '21:00:00'
+  condition:
+  - condition: numeric_state
+    entity_id: weather.home_hourly
+    attribute: temperature
+    below: '11'
+  - condition: or
+    conditions:
+    - condition: device
+      device_id: 6307e97b54087e483a339e273ee21043
+      domain: device_tracker
+      entity_id: device_tracker.james_phone
+      type: is_home
+    - condition: device
+      device_id: 91eeb8f33434c7f0bdf6dd764ac5d1ea
+      domain: device_tracker
+      entity_id: device_tracker.alyssa_phone
+      type: is_home
+  action:
+  - service: input_number.set_value
+    data:
+      value: 60
+    target:
+      entity_id: input_number.heater_timer
+  - type: turn_on
+    device_id: 46d18f9957b76230716414583e56126d
+    entity_id: switch.bedroom_heater
+    domain: switch
+  - service: notify.notify
+    data:
+      title: Home Assistant
+      message: Turned on the bedroom heater for {{states('input_number.heater_timer')|int}}
+        minutes
+  mode: single

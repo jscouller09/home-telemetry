@@ -1,0 +1,99 @@
+type: entities
+entities:
+  - entity: input_number.sprinkler_timer
+    name: Timer
+  - type: divider
+  - type: custom:fold-entity-row
+    head:
+      entity: input_boolean.sprinkler_1
+      name: Fernery (S1)
+    entities:
+      - type: attribute
+        entity: pyscript.sprinkler_1
+        attribute: supply_v
+        name: Supply Voltage
+        icon: mdi:lightning-bolt-outline
+        suffix: V
+      - type: attribute
+        entity: pyscript.sprinkler_1
+        attribute: last_on
+        name: Last On
+        icon: mdi:timer-play-outline
+        format: datetime
+      - type: attribute
+        entity: pyscript.sprinkler_1
+        attribute: last_off
+        name: Last Off
+        icon: mdi:timer-stop-outline
+        format: datetime
+  - type: custom:fold-entity-row
+    head:
+      entity: input_boolean.sprinkler_2
+      name: Fernery (S2)
+    entities:
+      - type: attribute
+        entity: pyscript.sprinkler_2
+        attribute: supply_v
+        name: Supply Voltage
+        icon: mdi:lightning-bolt-outline
+        suffix: V
+      - type: attribute
+        entity: pyscript.sprinkler_2
+        attribute: last_on
+        name: Last On
+        icon: mdi:timer-play-outline
+        format: datetime
+      - type: attribute
+        entity: pyscript.sprinkler_2
+        attribute: last_off
+        name: Last Off
+        icon: mdi:timer-stop-outline
+        format: datetime
+  - type: custom:fold-entity-row
+    head:
+      entity: input_boolean.sprinkler_3
+      name: Fernery (S3)
+    entities:
+      - type: attribute
+        entity: pyscript.sprinkler_3
+        attribute: supply_v
+        name: Supply Voltage
+        icon: mdi:lightning-bolt-outline
+        suffix: V
+      - type: attribute
+        entity: pyscript.sprinkler_3
+        attribute: last_on
+        name: Last On
+        icon: mdi:timer-play-outline
+        format: datetime
+      - type: attribute
+        entity: pyscript.sprinkler_3
+        attribute: last_off
+        name: Last Off
+        icon: mdi:timer-stop-outline
+        format: datetime
+  - type: custom:fold-entity-row
+    head:
+      entity: input_boolean.sprinkler_4
+      name: Fernery (S4)
+    entities:
+      - type: attribute
+        entity: pyscript.sprinkler_4
+        attribute: supply_v
+        name: Supply Voltage
+        icon: mdi:lightning-bolt-outline
+        suffix: V
+      - type: attribute
+        entity: pyscript.sprinkler_4
+        attribute: last_on
+        name: Last On
+        icon: mdi:timer-play-outline
+        format: datetime
+      - type: attribute
+        entity: pyscript.sprinkler_4
+        attribute: last_off
+        name: Last Off
+        icon: mdi:timer-stop-outline
+        format: datetime
+title: Irrigation
+state_color: true

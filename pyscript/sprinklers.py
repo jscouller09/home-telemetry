@@ -14,10 +14,12 @@ logger.debug(sys.path)
 import hub
 
 # setup state vars
-state.set('pyscript.sprinkler_1', 'off', supply_v='', solenoid='S1', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
-state.set('pyscript.sprinkler_2', 'off', supply_v='', solenoid='S2', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
-state.set('pyscript.sprinkler_3', 'off', supply_v='', solenoid='S3', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
-state.set('pyscript.sprinkler_4', 'off', supply_v='', solenoid='S4', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
+sprinkler_names = ['sprinkler_1', 'sprinkler_2', 'sprinkler_3', 'sprinkler_4']
+state.set('pyscript.{}'.format(sprinkler_names[0]), 'off', supply_v=0.0, solenoid='S1', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
+state.set('pyscript.{}'.format(sprinkler_names[1]), 'off', supply_v=0.0, solenoid='S2', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
+state.set('pyscript.{}'.format(sprinkler_names[2]), 'off', supply_v=0.0, solenoid='S3', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
+state.set('pyscript.{}'.format(sprinkler_names[3]), 'off', supply_v=0.0, solenoid='S4', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
+
 
 # register state trigger for sprinkers
 @state_trigger("input_boolean.sprinkler_1== 'on'")
@@ -59,18 +61,18 @@ def toggle_sprinkler(**kwargs):
         logger.debug('response was: {}'.format(full_reply))
         logger.debug('supply V reported was: {}'.format(supply_v))
         if supply_v and supply_v != '':
-            state_var.supply_v = supply_v
+            state_var.supply_v = float(supply_v)
         if status == 'ON':
             state_var.last_on=state.get(kwargs['var_name']).last_changed
             # update state variable
             state.set(state_var_name, state.get(kwargs['var_name']), supply_v=state_var.supply_v, solenoid=state_var.solenoid, radio_address=state_var.radio_address, last_off=state_var.last_off, last_on=state_var.last_on)
             # setup asycronous task to send an off signal after the specified time
-            num_mins = int(float(input_number.sprinker_timer))
+            num_mins = int(float(input_number.sprinkler_timer))
             send_time = datetime.now() + timedelta(minutes=num_mins)
             logger.debug('delaying turn off for {} minutes until {:%Y/%m/%d %H:%M:%S}'.format(num_mins, send_time))
             trig_info = task.wait_until(
                     state_trigger="{} == 'off'".format(kwargs['var_name']),
-                    timeout=60.0 * float(input_number.sprinker_timer)
+                    timeout=60.0 * float(input_number.sprinkler_timer)
                 )
             if trig_info["trigger_type"] == "timeout":
                 # timeout elapsed without the solenoid being shut off manually
@@ -79,3 +81,20 @@ def toggle_sprinkler(**kwargs):
             state_var.last_off=state.get(kwargs['var_name']).last_changed
             # update state variable
             state.set(state_var_name, state.get(kwargs['var_name']), supply_v=state_var.supply_v, solenoid=state_var.solenoid, radio_address=state_var.radio_address, last_off=state_var.last_off, last_on=state_var.last_on)
+
+@service
+def update_sprinkler_supply_voltages(**kwargs):
+    # pick right destination radion and solenoid valve based on config
+    logger.debug('get_supply_voltages called with kwargs: {}'.format(kwargs))
+    for sprinkler_name in sprinkler_names:
+        state_var_name = "pyscript.{}".format(sprinkler_name)
+        state_var = state.get(state_var_name)
+        radio_address = state_var.radio_address
+        # setup asyncronous task to connect to the local xbee hub, send the message, await the reply and then disconnect
+        supply_v, full_reply = task.executor(hub.send_message, radio_address, 'SUPPLY', 'SUPPLY:')
+        logger.debug('response was: {}'.format(full_reply))
+        logger.debug('supply V reported was: {}'.format(supply_v))
+        if supply_v and supply_v != '':
+            state_var.supply_v = float(supply_v)
+            # update state variable
+            state.set(state_var_name, state.get('input_boolean.{}'.format(sprinkler_name)), supply_v=state_var.supply_v, solenoid=state_var.solenoid, radio_address=state_var.radio_address, last_off=state_var.last_off, last_on=state_var.last_on)

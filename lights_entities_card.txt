@@ -1,0 +1,27 @@
+type: entities
+entities:
+  - type: divider
+  - type: custom:fold-entity-row
+    head:
+      entity: switch.christmas_lights
+      name: Christmas Tree
+    entities:
+      - entity: sensor.christmas_lights_voltage
+        name: Voltage
+      - entity: sensor.christmas_lights_current
+        name: Current
+      - entity: sensor.christmas_lights_current_consumption
+        name: Power
+  - type: custom:fold-entity-row
+    head:
+      entity: switch.fernery_lights
+      name: Fernery
+    entities:
+      - entity: sensor.fernery_lights_voltage
+        name: Voltage
+      - entity: sensor.fernery_lights_current
+        name: Current
+      - entity: sensor.fernery_lights_current_consumption
+        name: Power
+title: Lights
+state_color: true
