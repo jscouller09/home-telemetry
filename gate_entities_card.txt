@@ -1,0 +1,8 @@
+type: entities
+entities:
+  - entity: switch.gate_remote
+    name: Remote
+  - entity: sensor.gate_supply_voltage
+    name: Voltage
+title: Gate
+show_header_toggle: false

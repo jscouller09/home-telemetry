@@ -11,7 +11,7 @@ entities:
       - type: attribute
         entity: pyscript.sprinkler_1
         attribute: supply_v
-        name: Supply Voltage
+        name: Voltage
         icon: mdi:lightning-bolt-outline
         suffix: V
       - type: attribute
@@ -29,12 +29,12 @@ entities:
   - type: custom:fold-entity-row
     head:
       entity: input_boolean.sprinkler_2
-      name: Fernery (S2)
+      name: Lawn (S2)
     entities:
       - type: attribute
         entity: pyscript.sprinkler_2
         attribute: supply_v
-        name: Supply Voltage
+        name: Voltage
         icon: mdi:lightning-bolt-outline
         suffix: V
       - type: attribute
@@ -52,12 +52,12 @@ entities:
   - type: custom:fold-entity-row
     head:
       entity: input_boolean.sprinkler_3
-      name: Fernery (S3)
+      name: Flower Bed (S3)
     entities:
       - type: attribute
         entity: pyscript.sprinkler_3
         attribute: supply_v
-        name: Supply Voltage
+        name: Voltage
         icon: mdi:lightning-bolt-outline
         suffix: V
       - type: attribute
@@ -75,12 +75,12 @@ entities:
   - type: custom:fold-entity-row
     head:
       entity: input_boolean.sprinkler_4
-      name: Fernery (S4)
+      name: Retaining Wall (S4)
     entities:
       - type: attribute
         entity: pyscript.sprinkler_4
         attribute: supply_v
-        name: Supply Voltage
+        name: Voltage
         icon: mdi:lightning-bolt-outline
         suffix: V
       - type: attribute
