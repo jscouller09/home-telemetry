@@ -17,7 +17,7 @@ from machine import Pin
 # main code
 
 # time to send signal to relay for
-pulse_s = 0.01 # depends on the solenoid valve
+pulse_s = 1 # depends on the solenoid valve
 # 2 control pins and 4 relay terminals required per solenoid
 # P2 used for reading supply/battery voltage
 # D1 and P1 reserved for I2C devices in the future
