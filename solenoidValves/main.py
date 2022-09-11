@@ -16,8 +16,9 @@ from machine import Pin
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # main code
 
+# note latching valves seem to require different voltages (usually lower than expected e.g. -6V to -7V for a 9V solenoid) to turn off properly
 # time to send signal to relay for
-pulse_s = 1 # depends on the solenoid valve
+pulse_s = 0.05 # depends on the solenoid valve, usually 0.05-0.1s is fine if the voltage is set right
 # 2 control pins and 4 relay terminals required per solenoid
 # P2 used for reading supply/battery voltage
 # D1 and P1 reserved for I2C devices in the future

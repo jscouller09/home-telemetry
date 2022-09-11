@@ -1,8 +1,7 @@
-
-
 switch:
+  # pushbutton switch
   - platform: gpio
-    pin: 22
+    pin: 23
     restore_mode: ALWAYS_OFF
     id: gate_pushbutton_relay
     name: "Gate Remote"
@@ -10,15 +9,23 @@ switch:
     on_turn_on:
     - delay: 200ms
     - switch.turn_off: gate_pushbutton_relay
-    
+  
+  # power supply switch
   - platform: gpio
-    pin: 23
+    pin: 22
     restore_mode: RESTORE_DEFAULT_ON 
     id: gate_power_relay
     name: "Gate Power Supply"
     icon: "mdi:power-plug-outline"
 
 sensor:
+  # measure WiFi signal strength
+  - platform: wifi_signal
+    id: gate_wifi_signal
+    name: "Gate WiFi Signal"
+    update_interval: 60s
+
+  # measure supply voltage
   - platform: adc
     pin: 33
     attenuation: auto
@@ -28,13 +35,13 @@ sensor:
     accuracy_decimals: 2
     icon: "mdi:lightning-bolt-outline"
     filters:
-      - multiply: 8.536523929 # based on R1 = 1.496 MOhm and R2 = 198.5 kOhm resistors on the voltage divider
-    # on_value_range:
-    #   - below: 23.0
-    #     then:
-    #       - switch.turn_on: gate_pushbutton_relay
-    #       - delay: 30s
-    #       - switch.turn_off: gate_power_relay
-    #   - above: 23.0
-    #     then:
-    #       - switch.turn_on: gate_power_relay
+      - multiply: 8.549167927 # based on R1 = 1.497 MOhm and R2 = 198.3 kOhm resistors on the voltage divider
+    on_value_range:
+      - below: 23.0
+        then:
+          - switch.turn_on: gate_pushbutton_relay
+          - delay: 30s
+          - switch.turn_off: gate_power_relay
+      - above: 23.0
+        then:
+          - switch.turn_on: gate_power_relay
