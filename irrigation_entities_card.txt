@@ -2,6 +2,7 @@ type: entities
 entities:
   - entity: input_number.sprinkler_timer
     name: Timer
+  - entity: input_boolean.automatic_irrigation
   - type: divider
   - type: custom:fold-entity-row
     head:
