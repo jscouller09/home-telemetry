@@ -14,11 +14,12 @@ logger.debug(sys.path)
 import hub
 
 # setup state vars
-sprinkler_names = ['sprinkler_1', 'sprinkler_2', 'sprinkler_3', 'sprinkler_4']
+sprinkler_names = ['sprinkler_1', 'sprinkler_2', 'sprinkler_3', 'sprinkler_4', 'sprinkler_5']
 state.set('pyscript.{}'.format(sprinkler_names[0]), 'off', supply_v=0.0, solenoid='S1', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
 state.set('pyscript.{}'.format(sprinkler_names[1]), 'off', supply_v=0.0, solenoid='S2', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
 state.set('pyscript.{}'.format(sprinkler_names[2]), 'off', supply_v=0.0, solenoid='S3', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
 state.set('pyscript.{}'.format(sprinkler_names[3]), 'off', supply_v=0.0, solenoid='S4', radio_address='0013A20041BB7AFC', last_off=None, last_on=None)
+state.set('pyscript.{}'.format(sprinkler_names[4]), 'off', supply_v=0.0, solenoid='S1', radio_address='0013A20041B9EB71', last_off=None, last_on=None)
 
 
 # register state trigger for sprinkers
@@ -30,6 +31,8 @@ state.set('pyscript.{}'.format(sprinkler_names[3]), 'off', supply_v=0.0, solenoi
 @state_trigger("input_boolean.sprinkler_3== 'off'")
 @state_trigger("input_boolean.sprinkler_4== 'on'")
 @state_trigger("input_boolean.sprinkler_4== 'off'")
+@state_trigger("input_boolean.sprinkler_5== 'on'")
+@state_trigger("input_boolean.sprinkler_5== 'off'")
 def toggle_sprinkler(**kwargs):
     # pick right destination radion and solenoid valve based on config
     logger.debug('toggle_sprinkler called with kwargs: {}'.format(kwargs))

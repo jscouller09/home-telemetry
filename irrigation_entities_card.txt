@@ -96,5 +96,28 @@ entities:
         name: Last Off
         icon: mdi:timer-stop-outline
         format: datetime
+  - type: custom:fold-entity-row
+    head:
+      entity: input_boolean.sprinkler_5
+      name: Front Yard (S5)
+    entities:
+      - type: attribute
+        entity: pyscript.sprinkler_5
+        attribute: supply_v
+        name: Voltage
+        icon: mdi:lightning-bolt-outline
+        suffix: V
+      - type: attribute
+        entity: pyscript.sprinkler_5
+        attribute: last_on
+        name: Last On
+        icon: mdi:timer-play-outline
+        format: datetime
+      - type: attribute
+        entity: pyscript.sprinkler_5
+        attribute: last_off
+        name: Last Off
+        icon: mdi:timer-stop-outline
+        format: datetime
 title: Irrigation
 state_color: true
