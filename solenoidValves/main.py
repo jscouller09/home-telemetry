@@ -9,7 +9,8 @@
 # global imports
 import xbee
 import time
-from machine import Pin, ADC
+from machine import Pin, ADC, I2C
+from bme280 import BME280
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # custom module imports
 
@@ -18,7 +19,7 @@ from machine import Pin, ADC
 
 # note latching valves seem to require different voltages (usually lower than expected e.g. -6V to -7V for a 9V solenoid) to turn off properly
 # time to send signal to relay for
-pulse_s = 10#0.05 # depends on the solenoid valve, usually 0.05-0.1s is fine if the voltage is set right
+pulse_s = 0.05 # depends on the solenoid valve, usually 0.05-0.1s is fine if the voltage is set right
 # the following dictionary gives the function of each of the configurable Xbee pins
 xbee_pins = {'D0': None,
              'D1': 'SCL',
@@ -119,9 +120,19 @@ solenoids = {'S1': False,
              'S5': False,
              }
 
-print(" +--------------------------------------+")
-print(" | XBee MicroPython Receive Instruction |")
-print(" +--------------------------------------+\n")
+print(" +--------------------------+")
+print(" | XBee Solenoid Controller |")
+print(" +--------------------------+\n")
+
+try:
+    i2c = I2C(1, freq=100000)
+    bme = BME280(i2c=i2c)
+    bme_initialised = True
+    print('Initialised BME280!')
+    print(bme.values)
+except Exception:
+    print('Could not initialize BME280!')
+    bme_initialised = False
 
 def setup_output_pins():
     print('Setting up output pins to default HIGH...')
@@ -192,6 +203,17 @@ def toggle_solenoid(num, open=False):
         print('Solenoid {} closed'.format(num))
     print_solenoid_status()
 
+def read_meas():
+    if bme_initialised:
+        t, p, h = bme.read_compensated_data()
+        temp = t/100
+        pres = p/256/1000
+        hum = h/1024
+        return 'TEMP: {:.2f}°C. PRESSURE: {:.3f}kPa. HUMIDITY: {:.2f}%.'.format(temp, pres, hum)
+    else:
+        return ''
+
+
 # setup output pins
 setup_output_pins()
 # show states
@@ -218,13 +240,13 @@ while True:
         if msg[0:4] == 'OFF-':
             num = msg[4::]
             toggle_solenoid(num, open=False)
-            response = '{} CLOSED. SUPPLY: {:02.3f}V'.format(num, get_supply_voltage())
+            response = '{} CLOSED. SUPPLY: {:02.3f}V. {}'.format(num, get_supply_voltage(), read_meas())
         elif msg[0:3] == 'ON-':
             num = msg[3::]
             toggle_solenoid(num, open=True)
-            response = '{} OPENED. SUPPLY: {:02.3f}V'.format(num, get_supply_voltage())
-        elif msg[0:6] == 'SUPPLY':
-            response = 'SUPPLY: {:02.3f}V'.format(get_supply_voltage())
+            response = '{} OPENED. SUPPLY: {:02.3f}V. {}'.format(num, get_supply_voltage(), read_meas())
+        elif msg[0:7] == 'MEASURE':
+            response = 'SUPPLY: {:02.3f}V. {}'.format(get_supply_voltage(), read_meas())
         else:
             response = '"{}" IS NOT A VALID MESSAGE'.format(msg)
 

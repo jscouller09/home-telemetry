@@ -19,6 +19,9 @@ local_xbee = ZigBeeDevice(serial_port, baudrate)
 waiter_reply = threading.Event()
 expected_reply = None
 supply_v = ''
+temp = ''
+pres = ''
+hum = ''
 reply = ''
 
 
@@ -39,8 +42,11 @@ def send_message(dest_add, msg, await_reply=None):
         logger.debug('waited 20s to ensure message went through')
     disconnect_xb()
     global supply_v
+    global temp
+    global pres
+    global hum
     global reply
-    return supply_v, reply
+    return supply_v, temp, pres, hum, reply
 
 
 def __data_received(xbee_msg):
@@ -54,10 +60,23 @@ def __data_received(xbee_msg):
         # let waiting thread know we got the correct reply
         waiter_reply.set()
         # extract supply voltage measurement if present
-        match = re.search('SUPPLY\: (\d{1,2}.\d{3})V', data)
+        match = re.search('SUPPLY\: (-?\d{1,2}.\d{3})V', data)
         if match:
             global supply_v
             supply_v = match.group(1)
+        # extract other measurements if present
+        match = re.search('TEMP\: (-?\d{1,2}.\d{1,2})°C', data)
+        if match:
+            global temp
+            temp = match.group(1)
+        match = re.search('PRESSURE\: (-?\d{1,3}.\d{1,3})kPa', data)
+        if match:
+            global pres
+            pres = match.group(1)
+        match = re.search('HUMIDITY\: (-?\d{1,3}.\d{1,2})%', data)
+        if match:
+            global hum
+            hum = match.group(1)
     logger.debug('{} -> received {} from {}'.format(received_ts, data, str_add))
     global reply
     reply = data
