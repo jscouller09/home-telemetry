@@ -23,7 +23,10 @@ sensor:
   - platform: wifi_signal
     id: gate_wifi_signal
     name: "Gate WiFi Signal"
-    update_interval: 60s
+    #update_interval: 60s
+    accuracy_decimals: 1
+    filters:
+      - throttle_average: 300s
 
   # measure supply voltage
   - platform: adc
@@ -35,13 +38,15 @@ sensor:
     accuracy_decimals: 2
     icon: "mdi:lightning-bolt-outline"
     filters:
-      - multiply: 8.549167927 # based on R1 = 1.497 MOhm and R2 = 198.3 kOhm resistors on the voltage divider
-    on_value_range:
-      - below: 23.0
-        then:
-          - switch.turn_on: gate_pushbutton_relay
-          - delay: 30s
-          - switch.turn_off: gate_power_relay
-      - above: 23.0
-        then:
-          - switch.turn_on: gate_power_relay
+      - multiply: 8.551 # based on R1 = 1.5 MOhm and R2 = 200 kOhm resistors on the voltage divider
+      - throttle_average: 300s
+    # on_value_range:
+    #   - below: 20.0
+    #     then:
+    #       - switch.turn_on: gate_pushbutton_relay
+    #       - delay: 30s
+    #       - switch.turn_off: gate_power_relay
+    #   - above: 22.0
+    #     then:
+    #       - switch.turn_on: gate_power_relay
+    

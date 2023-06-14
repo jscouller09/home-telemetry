@@ -1,0 +1,51 @@
+type: entities
+entities:
+  - entity: sensor.house_temperature
+    name: House average
+  - type: divider
+  - type: custom:fold-entity-row
+    head:
+      entity: sensor.bedroom_temperature_humidity_sensor_temperature
+      name: Bedroom
+    entities:
+      - entity: sensor.bedroom_temperature_humidity_sensor_humidity
+        name: Humidity
+      - entity: sensor.bedroom_temperature_humidity_sensor_battery
+        name: Battery
+      - entity: sensor.bedroom_temperature_humidity_sensor_voltage
+        name: Voltage
+  - type: custom:fold-entity-row
+    head:
+      entity: sensor.study_temperature_humidity_sensor_temperature
+      name: Study
+    entities:
+      - entity: sensor.study_temperature_humidity_sensor_humidity
+        name: Humidity
+      - entity: sensor.study_temperature_humidity_sensor_battery
+        name: Battery
+      - entity: sensor.study_temperature_humidity_sensor_voltage
+        name: Voltage
+  - type: custom:fold-entity-row
+    head:
+      entity: sensor.nursery_temperature_humidity_sensor_temperature
+      name: Nursery
+    entities:
+      - entity: sensor.nursery_temperature_humidity_sensor_humidity
+        name: Humidity
+      - entity: sensor.nursery_temperature_humidity_sensor_battery
+        name: Battery
+      - entity: sensor.nursery_temperature_humidity_sensor_voltage
+        name: Voltage
+  - type: custom:fold-entity-row
+    head:
+      entity: sensor.lounge_temperature_humidity_sensor_temperature
+      name: Lounge
+    entities:
+      - entity: sensor.lounge_temperature_humidity_sensor_humidity
+        name: Humidity
+      - entity: sensor.lounge_temperature_humidity_sensor_battery
+        name: Battery
+      - entity: sensor.lounge_temperature_humidity_sensor_voltage
+        name: Voltage
+state_color: true
+title: Temperature
