@@ -1,0 +1,10 @@
+bedroom_heater_delayed_turn_off:
+  alias: Bedroom Heater delayed turn OFF
+  sequence:
+  - delay: 00:{{ states('input_number.heater_timer')|int }}:00
+  - service: switch.turn_off
+    data: {}
+    target:
+      device_id: 46d18f9957b76230716414583e56126d
+  mode: single
+  icon: mdi:radiator

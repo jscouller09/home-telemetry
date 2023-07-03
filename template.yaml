@@ -1,99 +1,99 @@
-# bedroom heater
+# smart_plug_1
 - sensor:
-    - unique_id: "eb3bde281fa6d2ecacx3gn_voltage"
-      name: "bedroom_heater_voltage"
-      state: "{{ states.switch.bedroom_heater.attributes.voltage }}"
+    - unique_id: "smart_plug_eb0dce8abbfe79a5b0p90j_voltage"
+      name: "smart_plug_1_voltage"
+      state: "{{ states.switch.smart_plug_1.attributes.voltage }}"
       unit_of_measurement: "V"
       icon: "mdi:lightning-bolt-outline"
 - sensor:
-    - unique_id: "eb3bde281fa6d2ecacx3gn_current"
-      name: "bedroom_heater_current"
-      state: "{{ states.switch.bedroom_heater.attributes.current }}"
+    - unique_id: "smart_plug_eb0dce8abbfe79a5b0p90j_current"
+      name: "smart_plug_1_current"
+      state: "{{ states.switch.smart_plug_1.attributes.current }}"
       unit_of_measurement: "mA"
       icon: "mdi:current-ac"
 - sensor:
-    - unique_id: "eb3bde281fa6d2ecacx3gn_current_consumption"
-      name: "bedroom_heater_current_consumption"
-      state: "{{ states.switch.bedroom_heater.attributes.current_consumption }}"
+    - unique_id: "smart_plug_eb0dce8abbfe79a5b0p90j_current_consumption"
+      name: "smart_plug_1_current_consumption"
+      state: "{{ states.switch.smart_plug_1.attributes.current_consumption }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
 
-# study heater
+# smart_plug_2
 - sensor:
-    - unique_id: "eb1ac648af196b7291k8al_voltage"
-      name: "study_heater_voltage"
-      state: "{{ states.switch.study_heater.attributes.voltage }}"
+    - unique_id: "smart_plug_eb0a0041c5403f9401bjd7_voltage"
+      name: "smart_plug_2_voltage"
+      state: "{{ states.switch.smart_plug_2.attributes.voltage }}"
       unit_of_measurement: "V"
       icon: "mdi:lightning-bolt-outline"
 - sensor:
-    - unique_id: "eb1ac648af196b7291k8al_current"
-      name: "study_heater_current"
-      state: "{{ states.switch.study_heater.attributes.current }}"
+    - unique_id: "smart_plug_eb0a0041c5403f9401bjd7_current"
+      name: "smart_plug_2_current"
+      state: "{{ states.switch.smart_plug_2.attributes.current }}"
       unit_of_measurement: "mA"
       icon: "mdi:current-ac"
 - sensor:
-    - unique_id: "eb1ac648af196b7291k8al_current_consumption"
-      name: "study_heater_current_consumption"
-      state: "{{ states.switch.study_heater.attributes.current_consumption }}"
+    - unique_id: "smart_plug_eb0a0041c5403f9401bjd7_current_consumption"
+      name: "smart_plug_2_current_consumption"
+      state: "{{ states.switch.smart_plug_2.attributes.current_consumption }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
 
-# nursery heater
+# smart_plug_3
 - sensor:
-    - unique_id: "eb0dce8abbfe79a5b0p90j_voltage"
-      name: "nursery_heater_voltage"
-      state: "{{ states.switch.nursery_heater.attributes.voltage }}"
+    - unique_id: "smart_plug_eb3bde281fa6d2ecacx3gn_voltage"
+      name: "smart_plug_3_voltage"
+      state: "{{ states.switch.smart_plug_3.attributes.voltage }}"
       unit_of_measurement: "V"
       icon: "mdi:lightning-bolt-outline"
 - sensor:
-    - unique_id: "eb0dce8abbfe79a5b0p90j_current"
-      name: "nursery_heater_current"
-      state: "{{ states.switch.nursery_heater.attributes.current }}"
+    - unique_id: "smart_plug_eb3bde281fa6d2ecacx3gn_current"
+      name: "smart_plug_3_current"
+      state: "{{ states.switch.smart_plug_3.attributes.current }}"
       unit_of_measurement: "mA"
       icon: "mdi:current-ac"
 - sensor:
-    - unique_id: "eb0dce8abbfe79a5b0p90j_current_consumption"
-      name: "nursery_heater_current_consumption"
-      state: "{{ states.switch.nursery_heater.attributes.current_consumption }}"
+    - unique_id: "smart_plug_eb3bde281fa6d2ecacx3gn_current_consumption"
+      name: "smart_plug_3_current_consumption"
+      state: "{{ states.switch.smart_plug_3.attributes.current_consumption }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
 
-# christmas lights
+# smart_plug_4
 - sensor:
-    - unique_id: "ebf77680f6c0c20a1bloot_voltage"
-      name: "christmas_lights_voltage"
-      state: "{{ states.switch.christmas_lights.attributes.voltage }}"
+    - unique_id: "smart_plug_ebf77680f6c0c20a1bloot_voltage"
+      name: "smart_plug_4_voltage"
+      state: "{{ states.switch.smart_plug_4.attributes.voltage }}"
       unit_of_measurement: "V"
       icon: "mdi:lightning-bolt-outline"
 - sensor:
-    - unique_id: "ebf77680f6c0c20a1bloot_current"
-      name: "christmas_lights_current"
-      state: "{{ states.switch.christmas_lights.attributes.current }}"
+    - unique_id: "smart_plug_ebf77680f6c0c20a1bloot_current"
+      name: "smart_plug_4_current"
+      state: "{{ states.switch.smart_plug_4.attributes.current }}"
       unit_of_measurement: "mA"
       icon: "mdi:current-ac"
 - sensor:
-    - unique_id: "ebf77680f6c0c20a1bloot_current_consumption"
-      name: "christmas_lights_current_consumption"
-      state: "{{ states.switch.christmas_lights.attributes.current_consumption }}"
+    - unique_id: "smart_plug_ebf77680f6c0c20a1bloot_current_consumption"
+      name: "smart_plug_4_current_consumption"
+      state: "{{ states.switch.smart_plug_4.attributes.current_consumption }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
 
-# # fernery lights
+# smart_plug_5
 - sensor:
-    - unique_id: "eb0a0041c5403f9401bjd7_voltage"
-      name: "fernery_lights_voltage"
-      state: "{{ states.switch.fernery_lights.attributes.voltage }}"
+    - unique_id: "smart_plug_eb1ac648af196b7291k8al_voltage"
+      name: "smart_plug_5_voltage"
+      state: "{{ states.switch.smart_plug_5.attributes.voltage }}"
       unit_of_measurement: "V"
       icon: "mdi:lightning-bolt-outline"
 - sensor:
-    - unique_id: "eb0a0041c5403f9401bjd7_current"
-      name: "fernery_lights_current"
-      state: "{{ states.switch.fernery_lights.attributes.current }}"
+    - unique_id: "smart_plug_eb1ac648af196b7291k8al_current"
+      name: "smart_plug_5_current"
+      state: "{{ states.switch.smart_plug_5.attributes.current }}"
       unit_of_measurement: "mA"
       icon: "mdi:current-ac"
 - sensor:
-    - unique_id: "eb0a0041c5403f9401bjd7_current_consumption"
-      name: "fernery_lights_current_consumption"
-      state: "{{ states.switch.fernery_lights.attributes.current_consumption }}"
+    - unique_id: "smart_plug_eb1ac648af196b7291k8al_current_consumption"
+      name: "smart_plug_5_current_consumption"
+      state: "{{ states.switch.smart_plug_5.attributes.current_consumption }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
