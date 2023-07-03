@@ -1,0 +1,59 @@
+type: entities
+entities:
+  - entity: sensor.electricity_meter_daily_energy
+    name: Daily Energy
+  - entity: sensor.electricity_meter_power_consumption
+    name: Power Consumption
+  - entity: sensor.electricity_meter_total_energy
+    name: Total Energy
+  - type: custom:fold-entity-row
+    head:
+      entity: sensor.smart_plug_1_energy_use
+    entities:
+      - entity: sensor.smart_plug_1_voltage
+        name: Voltage
+      - entity: sensor.smart_plug_1_current
+        name: Current
+      - entity: sensor.smart_plug_1_current_consumption
+        name: Power
+  - type: custom:fold-entity-row
+    head:
+      entity: sensor.smart_plug_2_energy_use
+    entities:
+      - entity: sensor.smart_plug_2_voltage
+        name: Voltage
+      - entity: sensor.smart_plug_2_current
+        name: Current
+      - entity: sensor.smart_plug_2_current_consumption
+        name: Power
+  - type: custom:fold-entity-row
+    head:
+      entity: sensor.smart_plug_3_energy_use
+    entities:
+      - entity: sensor.smart_plug_3_voltage
+        name: Voltage
+      - entity: sensor.smart_plug_3_current
+        name: Current
+      - entity: sensor.smart_plug_3_current_consumption
+        name: Power
+  - type: custom:fold-entity-row
+    head:
+      entity: sensor.smart_plug_4_energy_use
+    entities:
+      - entity: sensor.smart_plug_4_voltage
+        name: Voltage
+      - entity: sensor.smart_plug_4_current
+        name: Current
+      - entity: sensor.smart_plug_4_current_consumption
+        name: Power
+  - type: custom:fold-entity-row
+    head:
+      entity: sensor.smart_plug_5_energy_use
+    entities:
+      - entity: sensor.smart_plug_5_voltage
+        name: Voltage
+      - entity: sensor.smart_plug_5_current
+        name: Current
+      - entity: sensor.smart_plug_5_current_consumption
+        name: Power
+title: Electricity
