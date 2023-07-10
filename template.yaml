@@ -17,6 +17,14 @@
       state: "{{ states.switch.smart_plug_1.attributes.current_consumption }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
+- sensor:
+    - unique_id: "smart_plug_eb0dce8abbfe79a5b0p90j_energy_use"
+      name: "smart_plug_1_energy_use"
+      unit_of_measurement: "kWh"
+      state: "{{ (states('sensor.smart_plug_1_energy_use_kWmin')|float/60.0)|round(3) }}"
+      availability: "{{ is_number(states('sensor.smart_plug_1_energy_use_kWmin')) }}"
+      state_class: total_increasing
+      icon: "mdi:chart-histogram"
 
 # smart_plug_2
 - sensor:
@@ -37,6 +45,14 @@
       state: "{{ states.switch.smart_plug_2.attributes.current_consumption }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
+- sensor:
+    - unique_id: "smart_plug_eb0a0041c5403f9401bjd7_energy_use"
+      name: "smart_plug_2_energy_use"
+      unit_of_measurement: "kWh"
+      state: "{{ (states('sensor.smart_plug_2_energy_use_kWmin')|float/60.0)|round(3) }}"
+      availability: "{{ is_number(states('sensor.smart_plug_2_energy_use_kWmin')) }}"
+      state_class: total_increasing
+      icon: "mdi:chart-histogram"
 
 # smart_plug_3
 - sensor:
@@ -57,6 +73,14 @@
       state: "{{ states.switch.smart_plug_3.attributes.current_consumption }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
+- sensor:
+    - unique_id: "smart_plug_eb3bde281fa6d2ecacx3gn_energy_use"
+      name: "smart_plug_3_energy_use"
+      unit_of_measurement: "kWh"
+      state: "{{ (states('sensor.smart_plug_3_energy_use_kWmin')|float/60.0)|round(3) }}"
+      availability: "{{ is_number(states('sensor.smart_plug_3_energy_use_kWmin')) }}"
+      state_class: total_increasing
+      icon: "mdi:chart-histogram"
 
 # smart_plug_4
 - sensor:
@@ -77,6 +101,14 @@
       state: "{{ states.switch.smart_plug_4.attributes.current_consumption }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
+- sensor:
+    - unique_id: "smart_plug_ebf77680f6c0c20a1bloot_energy_use"
+      name: "smart_plug_4_energy_use"
+      unit_of_measurement: "kWh"
+      state: "{{ (states('sensor.smart_plug_4_energy_use_kWmin')|float/60.0)|round(3) }}"
+      availability: "{{ is_number(states('sensor.smart_plug_4_energy_use_kWmin')) }}"
+      state_class: total_increasing
+      icon: "mdi:chart-histogram"
 
 # smart_plug_5
 - sensor:
@@ -97,3 +129,11 @@
       state: "{{ states.switch.smart_plug_5.attributes.current_consumption }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
+- sensor:
+    - unique_id: "smart_plug_eb1ac648af196b7291k8al_energy_use"
+      name: "smart_plug_5_energy_use"
+      unit_of_measurement: "kWh"
+      state: "{{ (states('sensor.smart_plug_5_energy_use_kWmin')|float/60.0)|round(3) }}"
+      availability: "{{ is_number(states('sensor.smart_plug_5_energy_use_kWmin')) }}"
+      state_class: total_increasing
+      icon: "mdi:chart-histogram"

@@ -1,0 +1,77 @@
+type: entities
+title: Olive tree
+entities:
+  - entity: sensor.plant_sensor_942f_conductivity
+    name: Conductivity
+    card_mod:
+      style: |
+        :host {
+          {% if (states(config.entity)|float <= 2000) and (states(config.entity)|float >= 350) %}
+            --card-mod-icon-color: mediumseagreen;
+          {% elif (states(config.entity)|float <= 5000) and (states(config.entity)|float >= 200) %}
+            --card-mod-icon-color: orange;
+          {% else %}
+            --card-mod-icon-color: red;
+          {% endif %};
+        }
+  - entity: sensor.plant_sensor_942f_illuminance
+    name: Illuminance
+    card_mod:
+      style: |
+        :host {
+          {% if (states(config.entity)|float <= 95000) and (states(config.entity)|float >= 3700) %}
+            --card-mod-icon-color: mediumseagreen;
+          {% elif (states(config.entity)|float <= 100000) and (states(config.entity)|float >= 2000) %}
+            --card-mod-icon-color: orange;
+          {% else %}
+            --card-mod-icon-color: red;
+          {% endif %};
+        }
+  - entity: sensor.plant_sensor_942f_moisture
+    name: Moisture
+    card_mod:
+      style: |
+        :host {
+          {% if (states(config.entity)|float <= 60) and (states(config.entity)|float >= 15) %}
+            --card-mod-icon-color: mediumseagreen;
+          {% elif (states(config.entity)|float <= 70) and (states(config.entity)|float >= 10) %}
+            --card-mod-icon-color: orange;
+          {% else %}
+            --card-mod-icon-color: red;
+          {% endif %};
+        }
+  - entity: sensor.plant_sensor_942f_temperature
+    name: Temperature
+    card_mod:
+      style: |
+        :host {
+          {% if (states(config.entity)|float <= 30) and (states(config.entity)|float >= 10) %}
+            --card-mod-icon-color: mediumseagreen;
+          {% elif (states(config.entity)|float <= 35) and (states(config.entity)|float >= 0) %}
+            --card-mod-icon-color: orange;
+          {% else %}
+            --card-mod-icon-color: red;
+          {% endif %};
+        }
+  - entity: sensor.plant_sensor_942f_battery
+    name: Battery
+    card_mod:
+      style: |
+        :host {
+          {% if states(config.entity)|float >= 90 %}
+            --card-mod-icon-color: mediumseagreen;
+            --card-mod-icon: mdi:battery;
+          {% elif states(config.entity)|float >= 80 %}
+            --card-mod-icon-color: mediumseagreen;
+            --card-mod-icon: mdi:battery-80;
+          {% elif states(config.entity)|float >= 50 %}
+            --card-mod-icon-color: orange;
+            --card-mod-icon: mdi:battery-50;
+          {% elif states(config.entity)|float >= 20 %}
+            --card-mod-icon-color: orange;
+            --card-mod-icon: mdi:battery-20;
+          {% else %}
+            --card-mod-icon-color: red;
+            --card-mod-icon: mdi:battery-low;
+          {% endif %};
+        }

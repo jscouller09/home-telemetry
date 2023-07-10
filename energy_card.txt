@@ -16,6 +16,8 @@ entities:
         name: Current
       - entity: sensor.smart_plug_1_current_consumption
         name: Power
+      - entity: sensor.smart_plug_1_energy_use_kwmin
+        name: Energy Use
   - type: custom:fold-entity-row
     head:
       entity: sensor.smart_plug_2_energy_use
@@ -26,6 +28,8 @@ entities:
         name: Current
       - entity: sensor.smart_plug_2_current_consumption
         name: Power
+      - entity: sensor.smart_plug_2_energy_use_kwmin
+        name: Energy Use
   - type: custom:fold-entity-row
     head:
       entity: sensor.smart_plug_3_energy_use
@@ -36,6 +40,8 @@ entities:
         name: Current
       - entity: sensor.smart_plug_3_current_consumption
         name: Power
+      - entity: sensor.smart_plug_3_energy_use_kwmin
+        name: Energy Use
   - type: custom:fold-entity-row
     head:
       entity: sensor.smart_plug_4_energy_use
@@ -46,6 +52,8 @@ entities:
         name: Current
       - entity: sensor.smart_plug_4_current_consumption
         name: Power
+      - entity: sensor.smart_plug_4_energy_use_kwmin
+        name: Energy Use
   - type: custom:fold-entity-row
     head:
       entity: sensor.smart_plug_5_energy_use
@@ -56,4 +64,6 @@ entities:
         name: Current
       - entity: sensor.smart_plug_5_current_consumption
         name: Power
+      - entity: sensor.smart_plug_5_energy_use_kwmin
+        name: Energy Use
 title: Electricity
