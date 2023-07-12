@@ -1,139 +1,196 @@
+- sensor:
+    - unique_id: current_electricity_rate
+      state: >
+        {% if is_state('select.daily_energy', 'peak') %}
+          {{ 0.3017439 | float }}
+        {% else %}
+          {{ 0.1270865 | float }}
+        {% endif %}
+      name: Current Electricity Rate
+      device_class: monetary
+      unit_of_measurement: NZD/kWh
+      state_class: total
+
+- sensor:
+    - unique_id: daily_energy_cost
+      name: Daily Energy Cost
+      device_class: monetary
+      state_class: total
+      unit_of_measurement: NZD
+      state: >
+        {{((states('sensor.daily_energy_off_peak') | float)*0.1270865 + (states('sensor.daily_energy_peak') | float)*0.3017439 + 0.5933999999999999) | round(4)}}
+
 # smart_plug_1
 - sensor:
     - unique_id: "smart_plug_eb0dce8abbfe79a5b0p90j_voltage"
       name: "smart_plug_1_voltage"
-      state: "{{ states.switch.smart_plug_1.attributes.voltage }}"
+      state: "{{ states.switch.smart_plug_1.attributes.voltage | float }}"
       unit_of_measurement: "V"
       icon: "mdi:lightning-bolt-outline"
+      device_class: voltage
+      availability: "{{ not(is_state('switch.smart_plug_1', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_eb0dce8abbfe79a5b0p90j_current"
       name: "smart_plug_1_current"
-      state: "{{ states.switch.smart_plug_1.attributes.current }}"
+      state: "{{ states.switch.smart_plug_1.attributes.current | float }}"
       unit_of_measurement: "mA"
       icon: "mdi:current-ac"
+      device_class: current
+      availability: "{{ not(is_state('switch.smart_plug_1', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_eb0dce8abbfe79a5b0p90j_current_consumption"
       name: "smart_plug_1_current_consumption"
-      state: "{{ states.switch.smart_plug_1.attributes.current_consumption }}"
+      state: "{{ states.switch.smart_plug_1.attributes.current_consumption | float }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
+      device_class: power
+      availability: "{{ not(is_state('switch.smart_plug_1', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_eb0dce8abbfe79a5b0p90j_energy_use"
       name: "smart_plug_1_energy_use"
       unit_of_measurement: "kWh"
-      state: "{{ (states('sensor.smart_plug_1_energy_use_kWmin')|float/60.0)|round(3) }}"
+      state: "{{ (states('sensor.smart_plug_1_energy_use_kWmin') | float/60.0) | round(3) }}"
       availability: "{{ is_number(states('sensor.smart_plug_1_energy_use_kWmin')) }}"
       state_class: total_increasing
       icon: "mdi:chart-histogram"
+      device_class: energy
 
 # smart_plug_2
 - sensor:
     - unique_id: "smart_plug_eb0a0041c5403f9401bjd7_voltage"
       name: "smart_plug_2_voltage"
-      state: "{{ states.switch.smart_plug_2.attributes.voltage }}"
+      state: "{{ states.switch.smart_plug_2.attributes.voltage | float }}"
       unit_of_measurement: "V"
       icon: "mdi:lightning-bolt-outline"
+      device_class: voltage
+      availability: "{{ not(is_state('switch.smart_plug_2', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_eb0a0041c5403f9401bjd7_current"
       name: "smart_plug_2_current"
-      state: "{{ states.switch.smart_plug_2.attributes.current }}"
+      state: "{{ states.switch.smart_plug_2.attributes.current | float }}"
       unit_of_measurement: "mA"
       icon: "mdi:current-ac"
+      device_class: current
+      availability: "{{ not(is_state('switch.smart_plug_2', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_eb0a0041c5403f9401bjd7_current_consumption"
       name: "smart_plug_2_current_consumption"
-      state: "{{ states.switch.smart_plug_2.attributes.current_consumption }}"
+      state: "{{ states.switch.smart_plug_2.attributes.current_consumption | float }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
+      device_class: power
+      availability: "{{ not(is_state('switch.smart_plug_2', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_eb0a0041c5403f9401bjd7_energy_use"
       name: "smart_plug_2_energy_use"
       unit_of_measurement: "kWh"
-      state: "{{ (states('sensor.smart_plug_2_energy_use_kWmin')|float/60.0)|round(3) }}"
+      state: "{{ (states('sensor.smart_plug_2_energy_use_kWmin') | float/60.0) | round(3) }}"
       availability: "{{ is_number(states('sensor.smart_plug_2_energy_use_kWmin')) }}"
       state_class: total_increasing
       icon: "mdi:chart-histogram"
+      device_class: energy
 
 # smart_plug_3
 - sensor:
     - unique_id: "smart_plug_eb3bde281fa6d2ecacx3gn_voltage"
       name: "smart_plug_3_voltage"
-      state: "{{ states.switch.smart_plug_3.attributes.voltage }}"
+      state: "{{ states.switch.smart_plug_3.attributes.voltage | float }}"
       unit_of_measurement: "V"
       icon: "mdi:lightning-bolt-outline"
+      device_class: voltage
+      availability: "{{ not(is_state('switch.smart_plug_3', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_eb3bde281fa6d2ecacx3gn_current"
       name: "smart_plug_3_current"
-      state: "{{ states.switch.smart_plug_3.attributes.current }}"
+      state: "{{ states.switch.smart_plug_3.attributes.current | float }}"
       unit_of_measurement: "mA"
       icon: "mdi:current-ac"
+      device_class: current
+      availability: "{{ not(is_state('switch.smart_plug_3', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_eb3bde281fa6d2ecacx3gn_current_consumption"
       name: "smart_plug_3_current_consumption"
-      state: "{{ states.switch.smart_plug_3.attributes.current_consumption }}"
+      state: "{{ states.switch.smart_plug_3.attributes.current_consumption | float }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
+      device_class: power
+      availability: "{{ not(is_state('switch.smart_plug_3', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_eb3bde281fa6d2ecacx3gn_energy_use"
       name: "smart_plug_3_energy_use"
       unit_of_measurement: "kWh"
-      state: "{{ (states('sensor.smart_plug_3_energy_use_kWmin')|float/60.0)|round(3) }}"
+      state: "{{ (states('sensor.smart_plug_3_energy_use_kWmin') | float/60.0) | round(3) }}"
       availability: "{{ is_number(states('sensor.smart_plug_3_energy_use_kWmin')) }}"
       state_class: total_increasing
       icon: "mdi:chart-histogram"
+      device_class: energy
 
 # smart_plug_4
 - sensor:
     - unique_id: "smart_plug_ebf77680f6c0c20a1bloot_voltage"
       name: "smart_plug_4_voltage"
-      state: "{{ states.switch.smart_plug_4.attributes.voltage }}"
+      state: "{{ states.switch.smart_plug_4.attributes.voltage | float }}"
       unit_of_measurement: "V"
       icon: "mdi:lightning-bolt-outline"
+      device_class: voltage
+      availability: "{{ not(is_state('switch.smart_plug_4', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_ebf77680f6c0c20a1bloot_current"
       name: "smart_plug_4_current"
-      state: "{{ states.switch.smart_plug_4.attributes.current }}"
+      state: "{{ states.switch.smart_plug_4.attributes.current | float }}"
       unit_of_measurement: "mA"
       icon: "mdi:current-ac"
+      device_class: current
+      availability: "{{ not(is_state('switch.smart_plug_4', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_ebf77680f6c0c20a1bloot_current_consumption"
       name: "smart_plug_4_current_consumption"
-      state: "{{ states.switch.smart_plug_4.attributes.current_consumption }}"
+      state: "{{ states.switch.smart_plug_4.attributes.current_consumption | float }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
+      device_class: power
+      availability: "{{ not(is_state('switch.smart_plug_4', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_ebf77680f6c0c20a1bloot_energy_use"
       name: "smart_plug_4_energy_use"
       unit_of_measurement: "kWh"
-      state: "{{ (states('sensor.smart_plug_4_energy_use_kWmin')|float/60.0)|round(3) }}"
+      state: "{{ (states('sensor.smart_plug_4_energy_use_kWmin') | float/60.0) | round(3) }}"
       availability: "{{ is_number(states('sensor.smart_plug_4_energy_use_kWmin')) }}"
       state_class: total_increasing
       icon: "mdi:chart-histogram"
+      device_class: energy
 
 # smart_plug_5
 - sensor:
     - unique_id: "smart_plug_eb1ac648af196b7291k8al_voltage"
       name: "smart_plug_5_voltage"
-      state: "{{ states.switch.smart_plug_5.attributes.voltage }}"
+      state: "{{ states.switch.smart_plug_5.attributes.voltage | float }}"
       unit_of_measurement: "V"
       icon: "mdi:lightning-bolt-outline"
+      device_class: voltage
+      availability: "{{ not(is_state('switch.smart_plug_5', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_eb1ac648af196b7291k8al_current"
       name: "smart_plug_5_current"
-      state: "{{ states.switch.smart_plug_5.attributes.current }}"
+      state: "{{ states.switch.smart_plug_5.attributes.current | float }}"
       unit_of_measurement: "mA"
       icon: "mdi:current-ac"
+      device_class: current
+      availability: "{{ not(is_state('switch.smart_plug_5', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_eb1ac648af196b7291k8al_current_consumption"
       name: "smart_plug_5_current_consumption"
-      state: "{{ states.switch.smart_plug_5.attributes.current_consumption }}"
+      state: "{{ states.switch.smart_plug_5.attributes.current_consumption | float }}"
       unit_of_measurement: "W"
       icon: "mdi:lightbulb-on"
+      device_class: power
+      availability: "{{ not(is_state('switch.smart_plug_5', 'unavailable')) }}"
 - sensor:
     - unique_id: "smart_plug_eb1ac648af196b7291k8al_energy_use"
       name: "smart_plug_5_energy_use"
       unit_of_measurement: "kWh"
-      state: "{{ (states('sensor.smart_plug_5_energy_use_kWmin')|float/60.0)|round(3) }}"
+      state: "{{ (states('sensor.smart_plug_5_energy_use_kWmin') | float/60.0) | round(3) }}"
       availability: "{{ is_number(states('sensor.smart_plug_5_energy_use_kWmin')) }}"
       state_class: total_increasing
       icon: "mdi:chart-histogram"
+      device_class: energy
