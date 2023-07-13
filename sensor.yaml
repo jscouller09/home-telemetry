@@ -1,0 +1,44 @@
+- platform: integration
+  source: sensor.smart_plug_1_power
+  name: smart_plug_1_energy_use
+  unique_id: smart_plug_1_energy_use
+  round: 3
+  unit_prefix: k
+  unit_time: h
+  method: trapezoidal
+
+- platform: integration
+  source: sensor.smart_plug_2_power
+  name: smart_plug_2_energy_use
+  unique_id: smart_plug_2_energy_use
+  round: 3
+  unit_prefix: k
+  unit_time: h
+  method: trapezoidal
+
+- platform: integration
+  source: sensor.smart_plug_3_power
+  name: smart_plug_3_energy_use
+  unique_id: smart_plug_3_energy_use
+  round: 3
+  unit_prefix: k
+  unit_time: h
+  method: trapezoidal
+
+- platform: integration
+  source: sensor.smart_plug_4_power
+  name: smart_plug_4_energy_use
+  unique_id: smart_plug_4_energy_use
+  round: 3
+  unit_prefix: k
+  unit_time: h
+  method: trapezoidal
+
+- platform: integration
+  source: sensor.smart_plug_5_power
+  name: smart_plug_5_energy_use
+  unique_id: smart_plug_5_energy_use
+  round: 3
+  unit_prefix: k
+  unit_time: h
+  method: trapezoidal

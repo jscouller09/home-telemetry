@@ -14,10 +14,8 @@ entities:
         name: Voltage
       - entity: sensor.smart_plug_1_current
         name: Current
-      - entity: sensor.smart_plug_1_current_consumption
+      - entity: sensor.smart_plug_1_power
         name: Power
-      - entity: sensor.smart_plug_1_energy_use_kwmin
-        name: Energy Use
   - type: custom:fold-entity-row
     head:
       entity: sensor.smart_plug_2_energy_use
@@ -26,10 +24,8 @@ entities:
         name: Voltage
       - entity: sensor.smart_plug_2_current
         name: Current
-      - entity: sensor.smart_plug_2_current_consumption
+      - entity: sensor.smart_plug_2_power
         name: Power
-      - entity: sensor.smart_plug_2_energy_use_kwmin
-        name: Energy Use
   - type: custom:fold-entity-row
     head:
       entity: sensor.smart_plug_3_energy_use
@@ -38,10 +34,8 @@ entities:
         name: Voltage
       - entity: sensor.smart_plug_3_current
         name: Current
-      - entity: sensor.smart_plug_3_current_consumption
+      - entity: sensor.smart_plug_3_power
         name: Power
-      - entity: sensor.smart_plug_3_energy_use_kwmin
-        name: Energy Use
   - type: custom:fold-entity-row
     head:
       entity: sensor.smart_plug_4_energy_use
@@ -50,10 +44,8 @@ entities:
         name: Voltage
       - entity: sensor.smart_plug_4_current
         name: Current
-      - entity: sensor.smart_plug_4_current_consumption
+      - entity: sensor.smart_plug_4_power
         name: Power
-      - entity: sensor.smart_plug_4_energy_use_kwmin
-        name: Energy Use
   - type: custom:fold-entity-row
     head:
       entity: sensor.smart_plug_5_energy_use
@@ -62,8 +54,11 @@ entities:
         name: Voltage
       - entity: sensor.smart_plug_5_current
         name: Current
-      - entity: sensor.smart_plug_5_current_consumption
+      - entity: sensor.smart_plug_5_power
         name: Power
-      - entity: sensor.smart_plug_5_energy_use_kwmin
-        name: Energy Use
+  - entity: sensor.daily_energy_peak
+  - entity: sensor.daily_energy_off_peak
+  - entity: sensor.daily_energy_cost
+  - entity: sensor.current_electricity_rate
+  - entity: select.daily_energy
 title: Electricity
