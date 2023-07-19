@@ -30,7 +30,7 @@
       state_class: total
       unit_of_measurement: NZD
       state: >
-        {{((states('sensor.bill_energy_off_peak')|float)*0.1270865 + (states('sensor.bill_energy_peak')|float)*0.3017439 + 0.5933999999999999*((utcnow().date() - (state_attr('sensor.bill_energy_peak', 'last_reset')|as_datetime).date()).days + 1))|round(4)}}
+        {{((states('sensor.bill_energy_off_peak')|float)*0.1270865 + (states('sensor.bill_energy_peak')|float)*0.3017439 + 0.5933999999999999*((now().date() - (state_attr('sensor.bill_energy_peak', 'last_reset')|as_datetime|as_local).date()).days + 1))|round(4)}}
 
 # electricity ongoing total cost
 - sensor:
@@ -40,7 +40,7 @@
       state_class: total
       unit_of_measurement: NZD
       state: >
-        {{((states('sensor.total_energy_off_peak')|float)*0.1270865 + (states('sensor.total_energy_peak')|float)*0.3017439 + 0.5933999999999999*((utcnow().date() - (state_attr('sensor.total_energy_peak', 'last_reset')|as_datetime).date()).days + 1))|round(4)}}
+        {{((states('sensor.total_energy_off_peak')|float)*0.1270865 + (states('sensor.total_energy_peak')|float)*0.3017439 + 0.5933999999999999*((now().date() - (state_attr('sensor.total_energy_peak', 'last_reset')|as_datetime|as_local).date()).days + 1))|round(4)}}
 
 # electricity ongoing total cost for meter cost
 - sensor:
@@ -50,7 +50,7 @@
       state_class: total
       unit_of_measurement: NZD
       state: >
-        {{0.5933999999999999*((utcnow().date() - (state_attr('sensor.total_energy_peak', 'last_reset')|as_datetime).date()).days + 1)|round(4)}}
+        {{0.5933999999999999*((now().date() - (state_attr('sensor.total_energy_peak', 'last_reset')|as_datetime|as_local).date()).days + 1)|round(4)}}
 
 # # smart_plug_1 eb0dce8abbfe79a5b0p90j fridge
 # - sensor:
