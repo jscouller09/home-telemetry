@@ -5,7 +5,7 @@
   round: 3
   unit_prefix: k
   unit_time: h
-  method: right
+  method: trapezoidal
 
 - platform: integration
   source: sensor.smart_plug_2_power
@@ -14,7 +14,7 @@
   round: 3
   unit_prefix: k
   unit_time: h
-  method: right
+  method: trapezoidal
 
 - platform: integration
   source: sensor.smart_plug_3_power
@@ -23,7 +23,7 @@
   round: 3
   unit_prefix: k
   unit_time: h
-  method: right
+  method: trapezoidal
 
 - platform: integration
   source: sensor.smart_plug_4_power
@@ -32,7 +32,7 @@
   round: 3
   unit_prefix: k
   unit_time: h
-  method: right
+  method: trapezoidal
 
 - platform: integration
   source: sensor.smart_plug_5_power
@@ -41,7 +41,7 @@
   round: 3
   unit_prefix: k
   unit_time: h
-  method: right
+  method: trapezoidal
 
 - platform: integration
   source: sensor.smart_plug_6_power
@@ -50,7 +50,7 @@
   round: 3
   unit_prefix: k
   unit_time: h
-  method: right
+  method: trapezoidal
 
 - platform: integration
   source: sensor.smart_plug_7_power
@@ -59,4 +59,4 @@
   round: 3
   unit_prefix: k
   unit_time: h
-  method: right
+  method: trapezoidal
