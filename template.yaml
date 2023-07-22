@@ -52,6 +52,98 @@
       state: >
         {{0.5933999999999999*((now().date() - (state_attr('sensor.total_energy_peak', 'last_reset')|as_datetime|as_local).date()).days + 1)|round(4)}}
 
+# calculation of smart plug power values without unknown/available values
+- sensor:
+    - unique_id: smart_plug_1_power_no_gaps
+      name: smart_plug_1_power_no_gaps
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      state: >
+        {% if states('sensor.smart_plug_1_power') in ('unknown', 'unavailable') %}
+          {{ states('sensor.smart_plug_1_power_no_gaps') }}
+        {% else %}
+          {{ states('sensor.smart_plug_1_power') }}
+        {% endif %}
+
+- sensor:
+    - unique_id: smart_plug_2_power_no_gaps
+      name: smart_plug_2_power_no_gaps
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      state: >
+        {% if states('sensor.smart_plug_2_power') in ('unknown', 'unavailable') %}
+          {{ states('sensor.smart_plug_2_power_no_gaps') }}
+        {% else %}
+          {{ states('sensor.smart_plug_2_power') }}
+        {% endif %}
+
+- sensor:
+    - unique_id: smart_plug_3_power_no_gaps
+      name: smart_plug_3_power_no_gaps
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      state: >
+        {% if states('sensor.smart_plug_3_power') in ('unknown', 'unavailable') %}
+          {{ states('sensor.smart_plug_3_power_no_gaps') }}
+        {% else %}
+          {{ states('sensor.smart_plug_3_power') }}
+        {% endif %}
+
+- sensor:
+    - unique_id: smart_plug_4_power_no_gaps
+      name: smart_plug_4_power_no_gaps
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      state: >
+        {% if states('sensor.smart_plug_4_power') in ('unknown', 'unavailable') %}
+          {{ states('sensor.smart_plug_4_power_no_gaps') }}
+        {% else %}
+          {{ states('sensor.smart_plug_4_power') }}
+        {% endif %}
+
+- sensor:
+    - unique_id: smart_plug_5_power_no_gaps
+      name: smart_plug_5_power_no_gaps
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      state: >
+        {% if states('sensor.smart_plug_5_power') in ('unknown', 'unavailable') %}
+          {{ states('sensor.smart_plug_5_power_no_gaps') }}
+        {% else %}
+          {{ states('sensor.smart_plug_5_power') }}
+        {% endif %}
+
+- sensor:
+    - unique_id: smart_plug_6_power_no_gaps
+      name: smart_plug_6_power_no_gaps
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      state: >
+        {% if states('sensor.smart_plug_6_power') in ('unknown', 'unavailable') %}
+          {{ states('sensor.smart_plug_6_power_no_gaps') }}
+        {% else %}
+          {{ states('sensor.smart_plug_6_power') }}
+        {% endif %}
+
+- sensor:
+    - unique_id: smart_plug_7_power_no_gaps
+      name: smart_plug_7_power_no_gaps
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      state: >
+        {% if states('sensor.smart_plug_7_power') in ('unknown', 'unavailable') %}
+          {{ states('sensor.smart_plug_7_power_no_gaps') }}
+        {% else %}
+          {{ states('sensor.smart_plug_7_power') }}
+        {% endif %}
+
 # # smart_plug_1 eb0dce8abbfe79a5b0p90j fridge
 # - sensor:
 #     - unique_id: "smart_plug_1_voltage"
