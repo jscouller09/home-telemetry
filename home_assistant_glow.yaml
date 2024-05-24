@@ -18,8 +18,8 @@ substitutions:
   led_pin_green: GPIO4
 
   # Webserver credentials ⬇ #
-  web_username: 'glow'
-  web_password: 'esphome'
+  web_username: ''
+  web_password: ''
 
 dashboard_import:
   package_import_url: github://klaasnicolaas/home-assistant-glow/home_assistant_glow.yaml@main
@@ -61,8 +61,8 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "Esphome-Web-9D3114"
-    password: "9WFaYBLWXDO1"
+    ssid: ""
+    password: ""
 
 captive_portal:
 
