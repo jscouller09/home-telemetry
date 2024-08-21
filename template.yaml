@@ -3,16 +3,15 @@
     - unique_id: current_electricity_rate
       state: >
         {% if is_state('select.daily_energy', 'peak') %}
-          {{ 0.3017439 | float }}
+          {{ 0.2495293 | float }}
         {% else %}
-          {{ 0.1270865 | float }}
+          {{ 0.1246623 | float }}
         {% endif %}
       name: Current Electricity Rate
       device_class: monetary
       unit_of_measurement: NZD/kWh
-      state_class: total
 
-# electricity daily cost
+# electricity daily calucations
 - sensor:
     - unique_id: daily_energy_cost
       name: Daily Energy Cost
@@ -20,9 +19,16 @@
       state_class: total
       unit_of_measurement: NZD
       state: >
-        {{((states('sensor.daily_energy_off_peak')|float)*0.1270865 + (states('sensor.daily_energy_peak')|float)*0.3017439 + 0.5933999999999999)|round(4)}}
+        {{((states('sensor.daily_energy_off_peak')|float)*0.1246623 + (states('sensor.daily_energy_peak')|float)*0.2495293 + 0.92115)|round(4)}}
+- sensor:
+    - unique_id: daily_energy_off_peak_percentage
+      name: Daily Energy Off-Peak Percentage
+      state_class: measurement
+      unit_of_measurement: "%"
+      state: >
+        {{ ((states('sensor.daily_energy_off_peak')|float / (states('sensor.daily_energy_peak')|float + states('sensor.daily_energy_off_peak')|float))*100)|round(1) }}
 
-# electricity bill total cost
+# electricity bill calculations
 - sensor:
     - unique_id: bill_energy_cost
       name: Bill Energy Cost
@@ -30,9 +36,46 @@
       state_class: total
       unit_of_measurement: NZD
       state: >
-        {{((states('sensor.bill_energy_off_peak')|float)*0.1270865 + (states('sensor.bill_energy_peak')|float)*0.3017439 + 0.5933999999999999*((now().date() - (state_attr('sensor.bill_energy_peak', 'last_reset')|as_datetime|as_local).date()).days + 1))|round(4)}}
+        {{((states('sensor.bill_energy_off_peak')|float)*0.1246623 + (states('sensor.bill_energy_peak')|float)*0.2495293 + 0.92115*((now().date() - (state_attr('sensor.bill_energy_peak', 'last_reset')|as_datetime|as_local).date()).days + 1))|round(4)}}
+- sensor:
+    - unique_id: bill_energy_off_peak_percentage
+      name: Bill Energy Off-Peak Percentage
+      state_class: measurement
+      unit_of_measurement: "%"
+      state: >
+        {{ ((states('sensor.bill_energy_off_peak')|float / (states('sensor.bill_energy_peak')|float + states('sensor.bill_energy_off_peak')|float))*100)|round(1) }}
+- sensor:
+    - unique_id: bill_days_remaining
+      name: Bill Days Remaining
+      unit_of_measurement: days
+      state_class: total
+      state: >
+        {{ (state_attr('calendar.electricity_billing_dates','start_time')|as_datetime|as_local - now()).total_seconds()/86400 }}
+- sensor:
+    - unique_id: bill_days_elapsed
+      name: Bill Days Elapsed
+      unit_of_measurement: days
+      state_class: total
+      state: >
+        {{ (now() - state_attr('sensor.bill_energy_peak','last_reset')|as_datetime|as_local).total_seconds()/86400  }}
+- sensor:
+    - unique_id: bill_average_daily_charge
+      name: Bill Average Daily Charge
+      device_class: monetary
+      unit_of_measurement: NZD
+      state: >
+        {{ states('sensor.bill_energy_cost')|float / states('sensor.bill_days_elapsed')|float }}
+- sensor:
+    - unique_id: bill_forecast_cost
+      name: Bill Forecast Cost
+      device_class: monetary
+      unit_of_measurement: NZD
+      availability: >
+        {{ (states('sensor.bill_energy_cost') not in ('unavailable', 'unknown')) and (states('sensor.bill_average_daily_charge') not in ('unavailable', 'unknown')) and (states('sensor.bill_days_remaining') not in ('unavailable', 'unknown')) }}
+      state: >
+        {{ states('sensor.bill_energy_cost')|float + (states('sensor.bill_average_daily_charge')|float * states('sensor.bill_days_remaining')|float) }}
 
-# electricity ongoing total cost
+# electricity ongoing total energy cost
 - sensor:
     - unique_id: total_energy_cost
       name: Total Energy Cost
@@ -40,9 +83,9 @@
       state_class: total
       unit_of_measurement: NZD
       state: >
-        {{((states('sensor.total_energy_off_peak')|float)*0.1270865 + (states('sensor.total_energy_peak')|float)*0.3017439 + 0.5933999999999999*((now().date() - (state_attr('sensor.total_energy_peak', 'last_reset')|as_datetime|as_local).date()).days + 1))|round(4)}}
+        {{((states('sensor.total_energy_off_peak')|float)*0.1246623 + (states('sensor.total_energy_peak')|float)*0.2495293 + 0.92115*((now().date() - (state_attr('sensor.total_energy_peak', 'last_reset')|as_datetime|as_local).date()).days + 1))|round(4)}}
 
-# electricity ongoing total cost for meter cost
+# electricity ongoing total daily meter charges
 - sensor:
     - unique_id: total_meter_cost
       name: Total Meter Cost
@@ -50,99 +93,99 @@
       state_class: total
       unit_of_measurement: NZD
       state: >
-        {{0.5933999999999999*((now().date() - (state_attr('sensor.total_energy_peak', 'last_reset')|as_datetime|as_local).date()).days + 1)|round(4)}}
+        {{0.92115*((now().date() - (state_attr('sensor.total_energy_peak', 'last_reset')|as_datetime|as_local).date()).days + 1)|round(4)}}
 
 # calculation of smart plug power values without unknown/available values
-- sensor:
-    - unique_id: smart_plug_1_power_no_gaps
-      name: smart_plug_1_power_no_gaps
-      unit_of_measurement: W
-      device_class: power
-      state_class: measurement
-      state: >
-        {% if states('sensor.smart_plug_1_power') in ('unknown', 'unavailable') %}
-          {{ states('sensor.smart_plug_1_power_no_gaps') }}
-        {% else %}
-          {{ states('sensor.smart_plug_1_power') }}
-        {% endif %}
+# - sensor:
+#     - unique_id: smart_plug_1_power_no_gaps
+#       name: smart_plug_1_power_no_gaps
+#       unit_of_measurement: W
+#       device_class: power
+#       state_class: measurement
+#       state: >
+#         {% if states('sensor.smart_plug_1_power') in ('unknown', 'unavailable') %}
+#           {{ states('sensor.smart_plug_1_power_no_gaps') }}
+#         {% else %}
+#           {{ states('sensor.smart_plug_1_power') }}
+#         {% endif %}
 
-- sensor:
-    - unique_id: smart_plug_2_power_no_gaps
-      name: smart_plug_2_power_no_gaps
-      unit_of_measurement: W
-      device_class: power
-      state_class: measurement
-      state: >
-        {% if states('sensor.smart_plug_2_power') in ('unknown', 'unavailable') %}
-          {{ states('sensor.smart_plug_2_power_no_gaps') }}
-        {% else %}
-          {{ states('sensor.smart_plug_2_power') }}
-        {% endif %}
+# - sensor:
+#     - unique_id: smart_plug_2_power_no_gaps
+#       name: smart_plug_2_power_no_gaps
+#       unit_of_measurement: W
+#       device_class: power
+#       state_class: measurement
+#       state: >
+#         {% if states('sensor.smart_plug_2_power') in ('unknown', 'unavailable') %}
+#           {{ states('sensor.smart_plug_2_power_no_gaps') }}
+#         {% else %}
+#           {{ states('sensor.smart_plug_2_power') }}
+#         {% endif %}
 
-- sensor:
-    - unique_id: smart_plug_3_power_no_gaps
-      name: smart_plug_3_power_no_gaps
-      unit_of_measurement: W
-      device_class: power
-      state_class: measurement
-      state: >
-        {% if states('sensor.smart_plug_3_power') in ('unknown', 'unavailable') %}
-          {{ states('sensor.smart_plug_3_power_no_gaps') }}
-        {% else %}
-          {{ states('sensor.smart_plug_3_power') }}
-        {% endif %}
+# - sensor:
+#     - unique_id: smart_plug_3_power_no_gaps
+#       name: smart_plug_3_power_no_gaps
+#       unit_of_measurement: W
+#       device_class: power
+#       state_class: measurement
+#       state: >
+#         {% if states('sensor.smart_plug_3_power') in ('unknown', 'unavailable') %}
+#           {{ states('sensor.smart_plug_3_power_no_gaps') }}
+#         {% else %}
+#           {{ states('sensor.smart_plug_3_power') }}
+#         {% endif %}
 
-- sensor:
-    - unique_id: smart_plug_4_power_no_gaps
-      name: smart_plug_4_power_no_gaps
-      unit_of_measurement: W
-      device_class: power
-      state_class: measurement
-      state: >
-        {% if states('sensor.smart_plug_4_power') in ('unknown', 'unavailable') %}
-          {{ states('sensor.smart_plug_4_power_no_gaps') }}
-        {% else %}
-          {{ states('sensor.smart_plug_4_power') }}
-        {% endif %}
+# - sensor:
+#     - unique_id: smart_plug_4_power_no_gaps
+#       name: smart_plug_4_power_no_gaps
+#       unit_of_measurement: W
+#       device_class: power
+#       state_class: measurement
+#       state: >
+#         {% if states('sensor.smart_plug_4_power') in ('unknown', 'unavailable') %}
+#           {{ states('sensor.smart_plug_4_power_no_gaps') }}
+#         {% else %}
+#           {{ states('sensor.smart_plug_4_power') }}
+#         {% endif %}
 
-- sensor:
-    - unique_id: smart_plug_5_power_no_gaps
-      name: smart_plug_5_power_no_gaps
-      unit_of_measurement: W
-      device_class: power
-      state_class: measurement
-      state: >
-        {% if states('sensor.smart_plug_5_power') in ('unknown', 'unavailable') %}
-          {{ states('sensor.smart_plug_5_power_no_gaps') }}
-        {% else %}
-          {{ states('sensor.smart_plug_5_power') }}
-        {% endif %}
+# - sensor:
+#     - unique_id: smart_plug_5_power_no_gaps
+#       name: smart_plug_5_power_no_gaps
+#       unit_of_measurement: W
+#       device_class: power
+#       state_class: measurement
+#       state: >
+#         {% if states('sensor.smart_plug_5_power') in ('unknown', 'unavailable') %}
+#           {{ states('sensor.smart_plug_5_power_no_gaps') }}
+#         {% else %}
+#           {{ states('sensor.smart_plug_5_power') }}
+#         {% endif %}
 
-- sensor:
-    - unique_id: smart_plug_6_power_no_gaps
-      name: smart_plug_6_power_no_gaps
-      unit_of_measurement: W
-      device_class: power
-      state_class: measurement
-      state: >
-        {% if states('sensor.smart_plug_6_power') in ('unknown', 'unavailable') %}
-          {{ states('sensor.smart_plug_6_power_no_gaps') }}
-        {% else %}
-          {{ states('sensor.smart_plug_6_power') }}
-        {% endif %}
+# - sensor:
+#     - unique_id: smart_plug_6_power_no_gaps
+#       name: smart_plug_6_power_no_gaps
+#       unit_of_measurement: W
+#       device_class: power
+#       state_class: measurement
+#       state: >
+#         {% if states('sensor.smart_plug_6_power') in ('unknown', 'unavailable') %}
+#           {{ states('sensor.smart_plug_6_power_no_gaps') }}
+#         {% else %}
+#           {{ states('sensor.smart_plug_6_power') }}
+#         {% endif %}
 
-- sensor:
-    - unique_id: smart_plug_7_power_no_gaps
-      name: smart_plug_7_power_no_gaps
-      unit_of_measurement: W
-      device_class: power
-      state_class: measurement
-      state: >
-        {% if states('sensor.smart_plug_7_power') in ('unknown', 'unavailable') %}
-          {{ states('sensor.smart_plug_7_power_no_gaps') }}
-        {% else %}
-          {{ states('sensor.smart_plug_7_power') }}
-        {% endif %}
+# - sensor:
+#     - unique_id: smart_plug_7_power_no_gaps
+#       name: smart_plug_7_power_no_gaps
+#       unit_of_measurement: W
+#       device_class: power
+#       state_class: measurement
+#       state: >
+#         {% if states('sensor.smart_plug_7_power') in ('unknown', 'unavailable') %}
+#           {{ states('sensor.smart_plug_7_power_no_gaps') }}
+#         {% else %}
+#           {{ states('sensor.smart_plug_7_power') }}
+#         {% endif %}
 
 # # smart_plug_1 eb0dce8abbfe79a5b0p90j fridge
 # - sensor:

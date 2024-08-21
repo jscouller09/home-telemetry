@@ -1,78 +1,576 @@
-- id: '1658636493104'
-  alias: Turn OFF timer for all heaters
-  description: Automatically turn off heaters after the specified time has elapsed
+- id: '1664391485045'
+  alias: Fernery irrigation
+  description: Turn on Fernery irrigation and send a notification
   trigger:
-  - platform: device
-    type: turned_on
-    device_id: 46d18f9957b76230716414583e56126d
-    entity_id: switch.bedroom_heater
-    domain: switch
-  - platform: device
-    type: turned_on
-    device_id: f5772a00b01ad1ef01d21a9f93f2a0cd
-    entity_id: switch.nursery_heater
-    domain: switch
-  - platform: device
-    type: turned_on
-    device_id: a315e82ff76dc2c76c68182e55e94aca
-    entity_id: switch.study_heater
-    domain: switch
+  - platform: time
+    at: 07:50:00
+  condition:
+  - condition: time
+    before: 00:00:00
+    after: 00:00:00
+    weekday:
+    - sat
+  action:
+  - service: input_number.set_value
+    data:
+      value: 20
+    target:
+      entity_id: input_number.sprinkler_timer
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.sprinkler_1
+  - service: notify.notify
+    data:
+      title: Home Assistant
+      message: Turned on the Fernery irrigation for {{states('input_number.sprinkler_timer')|int}}
+        minutes
+  mode: single
+- id: '1664604820349'
+  alias: Camera notifications - person detection
+  description: Send notification when a person is detected on a camera
+  trigger:
+  - type: turned_on
+    platform: device
+    device_id: 2ebe056b688ae573020cf9ebe354cb31
+    entity_id: binary_sensor.front_door_person
+    domain: binary_sensor
+    id: front door
+  - type: turned_on
+    platform: device
+    device_id: c199a43d356eb896d33797ef2f70e403
+    entity_id: binary_sensor.back_door_person
+    domain: binary_sensor
+    id: back door
+  - type: turned_on
+    platform: device
+    device_id: 6e20370f35fc863608f7c2d7d8e604e0
+    entity_id: binary_sensor.back_yard_person
+    domain: binary_sensor
+    id: back yard
+  - type: turned_on
+    platform: device
+    device_id: 19a8e7ab675c4836fd01c58214445513
+    entity_id: binary_sensor.front_yard_person
+    domain: binary_sensor
+    id: front yard
   condition: []
   action:
   - service: notify.notify
     data:
       title: Home Assistant
-      message: Turned on {{ trigger.to_state.name }} for {{ states('input_number.heater_timer')|int
-        }} minutes entity_id - '{{trigger.entity_id}}'
-    enabled: false
-  - delay: 00:{{ states('input_number.heater_timer')|int }}:00
-  - service: switch.turn_off
+      message: Person dectected on {{ trigger.id }} camera at {{ now() | as_timestamp()
+        | timestamp_custom('%I:%M %p, %A %B %-d') }}
+      data:
+        notification_icon: mdi:motion-sensor
+        actions:
+        - action: URI
+          title: Open Cameras
+          uri: /lovelace-cameras/{{ trigger.id |regex_replace(find=' ', replace='-',
+            ignorecase=False) }}
+    enabled: true
+  mode: single
+- id: '1665122025464'
+  alias: Flower Bed irrigation
+  description: Turn on Flower Bed irrigation and send a notification
+  trigger:
+  - platform: time
+    at: 07:30:00
+  condition:
+  - condition: time
+    before: 00:00:00
+    weekday:
+    - sat
+    after: 00:00:00
+  action:
+  - service: input_number.set_value
     data:
-      entity_id: '{{trigger.entity_id}}'
+      value: 20
+    target:
+      entity_id: input_number.sprinkler_timer
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.sprinkler_3
   - service: notify.notify
     data:
       title: Home Assistant
-      message: Turned off {{ trigger.to_state.name }}
-    enabled: false
-  mode: parallel
-  max: 3
-- id: '1658641420308'
-  alias: Turn ON  bedroom heater at 9:00 pm for 1 hour on cold nights if we are home
-  description: Turn on bedroom heating at 9:00 pm for 1 hour if temperature is below
-    11°C and either of our phones are at home
+      message: Turned on the Flower Bed irrigation for {{states('input_number.sprinkler_timer')|int}}
+        minutes
+  mode: single
+- id: '1665870817317'
+  alias: Retaining Wall irrigation
+  description: Turn on Retaining Wall irrigation once a week and send a notification
   trigger:
   - platform: time
-    at: '21:00:00'
+    at: 05:30:00
   condition:
-  - condition: numeric_state
-    entity_id: weather.home_hourly
-    attribute: temperature
-    below: '11'
-  - condition: or
-    conditions:
-    - condition: device
-      device_id: 6307e97b54087e483a339e273ee21043
-      domain: device_tracker
-      entity_id: device_tracker.james_phone
-      type: is_home
-    - condition: device
-      device_id: 91eeb8f33434c7f0bdf6dd764ac5d1ea
-      domain: device_tracker
-      entity_id: device_tracker.alyssa_phone
-      type: is_home
+  - condition: time
+    before: 00:00:00
+    after: 00:00:00
+    weekday:
+    - sat
   action:
   - service: input_number.set_value
     data:
       value: 60
     target:
-      entity_id: input_number.heater_timer
-  - type: turn_on
-    device_id: 46d18f9957b76230716414583e56126d
-    entity_id: switch.bedroom_heater
-    domain: switch
+      entity_id: input_number.sprinkler_timer
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.sprinkler_4
   - service: notify.notify
     data:
       title: Home Assistant
-      message: Turned on the bedroom heater for {{states('input_number.heater_timer')|int}}
+      message: Turned on the Retaining Wall irrigation for {{states('input_number.sprinkler_timer')|int}}
         minutes
+  mode: single
+- id: '1665871087178'
+  alias: Lawn irrigation
+  description: Turn on Lawn irrigation once a week and send a notification
+  trigger:
+  - platform: time
+    at: 06:30:00
+  condition:
+  - condition: time
+    before: 00:00:00
+    after: 00:00:00
+    weekday:
+    - sat
+  action:
+  - service: input_number.set_value
+    data:
+      value: 60
+    target:
+      entity_id: input_number.sprinkler_timer
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.sprinkler_2
+  - service: notify.notify
+    data:
+      title: Home Assistant
+      message: Turned on the Lawn irrigation for {{states('input_number.sprinkler_timer')|int}}
+        minutes
+  mode: single
+- id: '1665896775669'
+  alias: Automatic irrigation
+  description: Automatically toggle all irrigation automations based on state of master
+    toggle switch
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.automatic_irrigation
+    from: 'on'
+    to: 'off'
+    id: '1'
+  - platform: state
+    entity_id:
+    - input_boolean.automatic_irrigation
+    from: 'off'
+    to: 'on'
+    id: '2'
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id: '1'
+    then:
+    - service: automation.turn_off
+      data: {}
+      target:
+        entity_id:
+        - automation.automation_2
+        - automation.flower_bed_irrigation
+        - automation.lawn_irrigation
+        - automation.retaining_wall_irrigation
+        - automation.fernery_misting
+    else:
+    - service: automation.turn_on
+      data: {}
+      target:
+        entity_id:
+        - automation.automation_2
+        - automation.flower_bed_irrigation
+        - automation.lawn_irrigation
+        - automation.retaining_wall_irrigation
+        - automation.fernery_misting
+  mode: single
+- id: '1665901105838'
+  alias: Camera notifications - vehicle detection
+  description: Send notification when a vehicle is detected on a camera
+  trigger:
+  - type: turned_on
+    platform: device
+    device_id: 2ebe056b688ae573020cf9ebe354cb31
+    entity_id: binary_sensor.front_door_vehicle
+    domain: binary_sensor
+    id: front door
+  - type: turned_on
+    platform: device
+    device_id: c199a43d356eb896d33797ef2f70e403
+    entity_id: binary_sensor.back_door_vehicle
+    domain: binary_sensor
+    id: back door
+  - type: turned_on
+    platform: device
+    device_id: 6e20370f35fc863608f7c2d7d8e604e0
+    entity_id: binary_sensor.back_yard_vehicle
+    domain: binary_sensor
+    id: back yard
+  - type: turned_on
+    platform: device
+    device_id: 19a8e7ab675c4836fd01c58214445513
+    entity_id: binary_sensor.front_yard_vehicle
+    domain: binary_sensor
+    id: front yard
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      title: Home Assistant
+      message: Vehicle dectected on {{ trigger.id }} camera at {{ now() | as_timestamp()
+        | timestamp_custom('%I:%M %p, %A %B %-d') }}
+      data:
+        notification_icon: mdi:car
+        actions:
+        - action: URI
+          title: Open Cameras
+          uri: /lovelace-cameras/{{ trigger.id |regex_replace(find=' ', replace='-',
+            ignorecase=False) }}
+    enabled: true
+  mode: single
+- id: '1674719743156'
+  alias: Fernery misting
+  description: Turn on Fernery irrigation and send a notification
+  trigger:
+  - platform: time
+    at: '14:00:00'
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - tue
+    - thu
+    - fri
+    - sat
+    - wed
+    - mon
+  action:
+  - service: input_number.set_value
+    data:
+      value: 2
+    target:
+      entity_id: input_number.sprinkler_timer
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.sprinkler_1
+  - service: notify.notify
+    data:
+      title: Home Assistant
+      message: Turned on the Fernery irrigation for {{states('input_number.sprinkler_timer')|int}}
+        minutes
+  mode: single
+- id: '1683154596039'
+  alias: Camera notifications - pet detection
+  description: Send notification when a pet is detected on a camera
+  trigger:
+  - type: turned_on
+    platform: device
+    device_id: 2ebe056b688ae573020cf9ebe354cb31
+    entity_id: binary_sensor.front_door_pet
+    domain: binary_sensor
+    id: front door
+  - type: turned_on
+    platform: device
+    device_id: c199a43d356eb896d33797ef2f70e403
+    entity_id: binary_sensor.back_door_pet
+    domain: binary_sensor
+    id: back door
+  - type: turned_on
+    platform: device
+    device_id: 6e20370f35fc863608f7c2d7d8e604e0
+    entity_id: binary_sensor.back_yard_pet
+    domain: binary_sensor
+    id: back yard
+  - type: turned_on
+    platform: device
+    device_id: 19a8e7ab675c4836fd01c58214445513
+    entity_id: binary_sensor.front_yard_pet
+    domain: binary_sensor
+    id: front yard
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      title: Home Assistant
+      message: Pet dectected on {{ trigger.id }} camera at {{ now() | as_timestamp()
+        | timestamp_custom('%I:%M %p, %A %B %-d') }}
+      data:
+        notification_icon: mdi:paw
+        actions:
+        - action: URI
+          title: Open Cameras
+          uri: /lovelace-cameras/{{ trigger.id |regex_replace(find=' ', replace='-',
+            ignorecase=False) }}
+    enabled: true
+  mode: single
+- id: '1686107870098'
+  alias: Gate low battery voltage warning
+  description: Send a notification when low voltage on gate batteries
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.esp32_gate_gate_supply_voltage
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    below: 22
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      title: Home Assistant
+      message: Gate supply voltage of {{states('sensor.esp32_gate_gate_supply_voltage',
+        with_unit=True, rounded=True)}} at {{ now() | as_timestamp() | timestamp_custom('%I:%M
+        %p, %A %B %-d') }} is below low voltage threshold of 22 V.
+  mode: single
+- id: '1689058722178'
+  alias: Electicity - set tarriff
+  description: Set the electricity meter tariff to peak/off-peak at the correct times
+  trigger:
+  - platform: time
+    at: 07:00:00
+    id: 7am
+  - platform: time
+    at: '21:00:00'
+    id: 9pm
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - 7am
+    - condition: time
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+      alias: is_weekday
+    then:
+    - service: select.select_option
+      data:
+        option: peak
+      target:
+        entity_id:
+        - select.daily_energy
+        - select.total_energy
+        - select.bill_energy
+        - select.electricity_meter_daily
+      alias: set_to_peak
+    else:
+    - if:
+      - condition: trigger
+        id:
+        - 9pm
+      then:
+      - service: select.select_option
+        data:
+          option: off-peak
+        target:
+          entity_id:
+          - select.daily_energy
+          - select.total_energy
+          - select.bill_energy
+          - select.electricity_meter_daily
+        alias: Set_to_off_peak
+  mode: single
+- id: '1689279645408'
+  alias: Electricity - bill period reset
+  description: Reset the billing meter based on events scheduled in calendar
+  trigger:
+  - platform: calendar
+    event: end
+    offset: 0:0:0
+    entity_id: calendar.electricity_billing_dates
+  condition: []
+  action:
+  - service: utility_meter.reset
+    data: {}
+    target:
+      entity_id: select.bill_energy
+  mode: single
+- id: '1693445481341'
+  alias: Bedroom temperature control
+  description: Swap the heatpump between heat/fan/cool mode based on measured temperature
+    in the bedroom
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.bedroom_temperature
+    from:
+  - platform: state
+    entity_id:
+    - input_boolean.bedroom_cool_model
+    - input_boolean.bedroom_heat_mode
+    - input_number.bedroom_target_temperature
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: input_boolean.bedroom_cool_model
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.bedroom_heat_mode
+      state: 'on'
+    alias: Check if automatic heating or cooling for the bedroom is enabled
+  action:
+  - alias: Check if the heatpump is set to fan mode, cooling is enabled, and the bedroom
+      temperature is more than 1°C above the target temperature
+    if:
+    - condition: template
+      value_template: '{{ (states(''sensor.bedroom_temperature'')|float - states(''input_number.bedroom_target_temperature'')|float)
+        > 1 }}'
+      alias: Bedroom temperature is more than 1°C above the target temperature
+    - condition: state
+      entity_id: input_boolean.bedroom_cool_model
+      state: 'on'
+    - alias: Confirm Heatpump is set to fan mode
+      condition: device
+      device_id: c438ca0e31139eec36bbc10b75a3bee5
+      domain: climate
+      entity_id: f51881c2f7e7d4c68ebc4344f8c44805
+      type: is_hvac_mode
+      hvac_mode: fan_only
+    then:
+    - alias: Set the heatpump to cool mode
+      device_id: c438ca0e31139eec36bbc10b75a3bee5
+      domain: climate
+      entity_id: f51881c2f7e7d4c68ebc4344f8c44805
+      type: set_hvac_mode
+      hvac_mode: cool
+    - service: climate.set_temperature
+      data:
+        temperature: '{{ max(states(''input_number.bedroom_target_temperature'')|int,
+          19) }}'
+      target:
+        device_id: c438ca0e31139eec36bbc10b75a3bee5
+      alias: Set the heatpump to the target temperature or minimum of 19°C
+    else:
+    - alias: Check if the heatpump is set to fan mode, heating is enabled, and the
+        bedroom temperature is more than 1°C below the target temperature
+      if:
+      - condition: template
+        value_template: '{{ (states(''input_number.bedroom_target_temperature'')|float
+          - states(''sensor.bedroom_temperature'')|float) > 1 }}'
+        alias: Bedroom temperature is more than 1°C below the target temperature
+      - condition: state
+        entity_id: input_boolean.bedroom_heat_mode
+        state: 'on'
+      - alias: Confirm Heatpump is set to fan mode
+        condition: device
+        device_id: c438ca0e31139eec36bbc10b75a3bee5
+        domain: climate
+        entity_id: f51881c2f7e7d4c68ebc4344f8c44805
+        type: is_hvac_mode
+        hvac_mode: fan_only
+      then:
+      - alias: Set the heatpump to heat mode
+        device_id: c438ca0e31139eec36bbc10b75a3bee5
+        domain: climate
+        entity_id: f51881c2f7e7d4c68ebc4344f8c44805
+        type: set_hvac_mode
+        hvac_mode: heat
+      - service: climate.set_temperature
+        data:
+          temperature: '{{ min(states(''input_number.bedroom_target_temperature'')|int,
+            28) }}'
+        target:
+          device_id: c438ca0e31139eec36bbc10b75a3bee5
+        alias: Set the heatpump to the target temperature or maximum of 28°C
+      else:
+      - alias: Check if the heatpump is currently heating/cooling if it should be
+          switched to fan mode
+        if:
+        - alias: Check if the heatpump is heating/cooling and if the bedroom temperature
+            is above/below the target temperature
+          condition: or
+          conditions:
+          - alias: Check if the heatpump is heating and the bedroom temperature is
+              above the target temperature
+            condition: and
+            conditions:
+            - alias: Confirm Heatpump is set to heat mode
+              condition: device
+              device_id: c438ca0e31139eec36bbc10b75a3bee5
+              domain: climate
+              entity_id: f51881c2f7e7d4c68ebc4344f8c44805
+              type: is_hvac_mode
+              hvac_mode: heat
+            - condition: template
+              value_template: '{{ states(''sensor.bedroom_temperature'')|float >=
+                states(''input_number.bedroom_target_temperature'')|float }}'
+              alias: Bedroom temperature is above the target temperature
+          - alias: Check if the heatpump is cooling and the bedroom temperature is
+              below the target temperature
+            condition: and
+            conditions:
+            - alias: Confirm Heatpump is set to cool mode
+              condition: device
+              device_id: c438ca0e31139eec36bbc10b75a3bee5
+              domain: climate
+              entity_id: f51881c2f7e7d4c68ebc4344f8c44805
+              type: is_hvac_mode
+              hvac_mode: cool
+            - condition: template
+              value_template: '{{ states(''sensor.bedroom_temperature'')|float <=
+                states(''input_number.bedroom_target_temperature'')|float }}'
+              alias: Bedroom temperature is below the target temperature
+        then:
+        - device_id: c438ca0e31139eec36bbc10b75a3bee5
+          domain: climate
+          entity_id: f51881c2f7e7d4c68ebc4344f8c44805
+          type: set_hvac_mode
+          hvac_mode: fan_only
+          alias: Set heatpump to fan only mode
+        else:
+        - choose:
+          - conditions:
+            - alias: Confirm Heatpump is set to cool mode
+              condition: device
+              device_id: c438ca0e31139eec36bbc10b75a3bee5
+              domain: climate
+              entity_id: f51881c2f7e7d4c68ebc4344f8c44805
+              type: is_hvac_mode
+              hvac_mode: cool
+            sequence:
+            - service: climate.set_temperature
+              data:
+                temperature: '{{ max(states(''input_number.bedroom_target_temperature'')|int,
+                  19) }}'
+              target:
+                device_id: c438ca0e31139eec36bbc10b75a3bee5
+              alias: Set the heatpump to the target temperature or minimum of 19°C
+          - conditions:
+            - alias: Confirm Heatpump is set to heat mode
+              condition: device
+              device_id: c438ca0e31139eec36bbc10b75a3bee5
+              domain: climate
+              entity_id: f51881c2f7e7d4c68ebc4344f8c44805
+              type: is_hvac_mode
+              hvac_mode: heat
+            sequence:
+            - service: climate.set_temperature
+              data:
+                temperature: '{{ min(states(''input_number.bedroom_target_temperature'')|int,
+                  28) }}'
+              target:
+                device_id: c438ca0e31139eec36bbc10b75a3bee5
+              alias: Set the heatpump to the target temperature or maximum of 28°C
+          alias: Leave the heatpump on heating/cooling and adjust the heatpump temperature
   mode: single
