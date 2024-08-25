@@ -16,6 +16,28 @@ entities:
         name: Voltage
   - type: custom:fold-entity-row
     head:
+      entity: sensor.bassinet_temperature_humidity_sensor_temperature
+      name: Bassinet
+    entities:
+      - entity: sensor.bassinet_temperature_humidity_sensor_humidity
+        name: Humidity
+      - entity: sensor.bassinet_temperature_humidity_sensor_battery
+        name: Battery
+      - entity: sensor.bassinet_temperature_humidity_sensor_voltage
+        name: Voltage
+  - type: custom:fold-entity-row
+    head:
+      entity: sensor.temperature_humidity_sensor_873e_temperature
+      name: Nappy Cart
+    entities:
+      - entity: sensor.temperature_humidity_sensor_873e_humidity
+        name: Humidity
+      - entity: sensor.temperature_humidity_sensor_873e_battery
+        name: Battery
+      - entity: sensor.temperature_humidity_sensor_873e_voltage
+        name: Voltage
+  - type: custom:fold-entity-row
+    head:
       entity: sensor.study_temperature_humidity_sensor_temperature
       name: Study
     entities:

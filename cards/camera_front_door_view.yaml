@@ -1,0 +1,22 @@
+square: false
+columns: 1
+type: grid
+cards:
+  - show_state: false
+    show_name: true
+    camera_view: auto
+    type: picture-entity
+    entity: camera.front_door_snapshots_sub
+    name: Front door
+    camera_image: camera.front_door_sub
+  - show_name: false
+    show_icon: true
+    show_state: false
+    type: glance
+    entities:
+      - entity: binary_sensor.front_door_motion
+      - entity: binary_sensor.front_door_person
+      - entity: binary_sensor.front_door_vehicle
+      - entity: binary_sensor.front_door_pet
+    state_color: true
+

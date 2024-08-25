@@ -1,0 +1,53 @@
+type: entities
+entities:
+  - type: divider
+  - type: custom:fold-entity-row
+    head:
+      entity: switch.smart_plug_2_socket_1
+      name: 🌿 Fernery
+      icon: mdi:lightbulb
+    entities:
+      - entity: sensor.smart_plug_2_voltage
+        name: Voltage
+      - entity: sensor.smart_plug_2_current
+        name: Current
+      - entity: sensor.smart_plug_2_power
+        name: Power
+  - type: custom:fold-entity-row
+    head:
+      entity: switch.smart_plug_7_socket_1
+      name: 🎄 Christmas
+      icon: mdi:lightbulb
+    entities:
+      - entity: sensor.smart_plug_7_voltage
+        name: Voltage
+      - entity: sensor.smart_plug_7_current
+        name: Current
+      - entity: sensor.smart_plug_7_power
+        name: Power
+  - type: custom:fold-entity-row
+    head:
+      entity: switch.smart_plug_1_socket_1
+      name: 🛏️ Bed
+      icon: mdi:lightbulb
+    entities:
+      - entity: sensor.smart_plug_1_voltage
+        name: Voltage
+      - entity: sensor.smart_plug_1_current
+        name: Current
+      - entity: sensor.smart_plug_1_power
+        name: Power
+  - type: custom:fold-entity-row
+    head:
+      entity: switch.smart_plug_4_socket_1
+      name: 🪟 Bedroom
+      icon: mdi:lightbulb
+    entities:
+      - entity: sensor.smart_plug_4_voltage
+        name: Voltage
+      - entity: sensor.smart_plug_4_current
+        name: Current
+      - entity: sensor.smart_plug_4_power
+        name: Power
+title: Lights
+state_color: true

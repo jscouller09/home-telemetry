@@ -1,0 +1,35 @@
+type: history-graph
+entities:
+  - entity: sensor.bedroom_temperature_humidity_sensor_battery
+    name: Bedroom
+  - entity: sensor.bassinet_temperature_humidity_sensor_battery
+    name: Bassinet
+  - entity: sensor.study_temperature_humidity_sensor_battery
+    name: Study
+  - entity: sensor.lounge_temperature_humidity_sensor_battery
+    name: Lounge
+  - entity: sensor.nursery_temperature_humidity_sensor_battery
+    name: Nursery
+  - entity: sensor.dining_room_temperature_humidity_sensor_battery
+    name: Dining Room
+  - entity: sensor.bathroom_temperature_humidity_sensor_battery
+    name: Bathroom
+  - entity: sensor.temperature_humidity_sensor_873e_battery
+    name: Nappy Cart
+  - entity: sensor.bedroom_temperature_humidity_sensor_voltage
+    name: Bedroom
+  - entity: sensor.bassinet_temperature_humidity_sensor_voltage
+    name: Bassinet
+  - entity: sensor.study_temperature_humidity_sensor_voltage
+    name: Study
+  - entity: sensor.lounge_temperature_humidity_sensor_voltage
+    name: Lounge
+  - entity: sensor.nursery_temperature_humidity_sensor_voltage
+    name: Nursery
+  - entity: sensor.dining_room_temperature_humidity_sensor_voltage
+    name: Dining Room
+  - entity: sensor.bathroom_temperature_humidity_sensor_voltage
+    name: Bathroom
+  - entity: sensor.temperature_humidity_sensor_873e_voltage
+    name: Nappy Cart
+hours_to_show: 720

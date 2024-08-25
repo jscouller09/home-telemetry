@@ -1,5 +1,4 @@
 type: entities
-title: Olive tree
 entities:
   - entity: sensor.plant_sensor_942f_conductivity
     name: Conductivity
@@ -19,9 +18,9 @@ entities:
     card_mod:
       style: |
         :host {
-          {% if (states(config.entity)|float <= 95000) and (states(config.entity)|float >= 3700) %}
+          {% if (states(config.entity)|float <= 35000) and (states(config.entity)|float >= 2500) %}
             --card-mod-icon-color: mediumseagreen;
-          {% elif (states(config.entity)|float <= 100000) and (states(config.entity)|float >= 2000) %}
+          {% elif (states(config.entity)|float <= 50000) and (states(config.entity)|float >= 2000) %}
             --card-mod-icon-color: orange;
           {% else %}
             --card-mod-icon-color: red;
@@ -32,7 +31,7 @@ entities:
     card_mod:
       style: |
         :host {
-          {% if (states(config.entity)|float <= 60) and (states(config.entity)|float >= 15) %}
+          {% if (states(config.entity)|float <= 60) and (states(config.entity)|float >= 20) %}
             --card-mod-icon-color: mediumseagreen;
           {% elif (states(config.entity)|float <= 70) and (states(config.entity)|float >= 10) %}
             --card-mod-icon-color: orange;
@@ -45,9 +44,9 @@ entities:
     card_mod:
       style: |
         :host {
-          {% if (states(config.entity)|float <= 30) and (states(config.entity)|float >= 10) %}
+          {% if (states(config.entity)|float <= 32) and (states(config.entity)|float >= 8) %}
             --card-mod-icon-color: mediumseagreen;
-          {% elif (states(config.entity)|float <= 35) and (states(config.entity)|float >= 0) %}
+          {% elif (states(config.entity)|float <= 36) and (states(config.entity)|float >= 0) %}
             --card-mod-icon-color: orange;
           {% else %}
             --card-mod-icon-color: red;
@@ -75,3 +74,4 @@ entities:
             --card-mod-icon: mdi:battery-low;
           {% endif %};
         }
+title: Lounge potplant

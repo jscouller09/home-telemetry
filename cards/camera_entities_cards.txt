@@ -1,0 +1,58 @@
+type: grid
+square: false
+columns: 1
+cards:
+  - square: false
+    type: grid
+    cards:
+      - show_state: false
+        show_name: true
+        camera_view: auto
+        type: picture-entity
+        entity: camera.back_yard_snapshots_sub
+        name: Back yard
+        camera_image: camera.back_yard_snapshots
+        hold_action:
+          action: navigate
+          navigation_path: /lovelace-cameras
+      - show_state: false
+        show_name: true
+        camera_view: auto
+        type: picture-entity
+        entity: camera.front_door_snapshots_sub
+        name: Front door
+        camera_image: camera.front_door_snapshots
+        hold_action:
+          action: navigate
+          navigation_path: /lovelace-cameras
+      - show_state: false
+        show_name: true
+        camera_view: auto
+        type: picture-entity
+        entity: camera.back_door_snapshots_sub
+        camera_image: camera.back_door_snapshots
+        name: Back door
+        hold_action:
+          action: navigate
+          navigation_path: /lovelace-cameras
+      - show_state: false
+        show_name: true
+        camera_view: auto
+        type: picture-entity
+        entity: camera.front_yard_snapshots_sub
+        hold_action:
+          action: navigate
+          navigation_path: /lovelace-cameras
+        camera_image: camera.front_yard_snapshots
+        name: Front yard
+    columns: 1
+  - type: glance
+    show_name: false
+    show_icon: true
+    show_state: false
+    entities:
+      - entity: binary_sensor.motion_detection
+      - entity: binary_sensor.person_detection
+      - entity: binary_sensor.vehicle_detection
+      - entity: binary_sensor.pet_detection
+    state_color: true

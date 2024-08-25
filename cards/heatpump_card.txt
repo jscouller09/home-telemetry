@@ -1,0 +1,18 @@
+square: false
+type: grid
+columns: 1
+cards:
+  - type: thermostat
+    entity: climate.heatpump
+    name: ' Heatpump'
+  - type: entities
+    entities:
+      - entity: sensor.bedroom_temperature
+        name: Bedroom Temperature
+      - entity: input_number.bedroom_target_temperature
+        name: Set temperature
+      - entity: input_boolean.bedroom_cool_model
+        name: Enable automatic cooling
+      - entity: input_boolean.bedroom_heat_mode
+        name: Enable automatic heating
+    state_color: true

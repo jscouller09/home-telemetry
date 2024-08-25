@@ -1,0 +1,16 @@
+square: false
+columns: 3
+type: grid
+cards:
+  - show_state: true
+    show_name: false
+    camera_view: auto
+    type: picture-entity
+    entity: person.james
+    aspect_ratio: '1'
+    image: /api/image/serve/c8928797ecfb6d9aa64e88cbe2a0c176/512x512
+  - type: picture-entity
+    entity: person.alyssa
+    aspect_ratio: '1'
+    show_name: false
+    image: /api/image/serve/13485d5fff3ad75cdad69c3e18279a6f/512x512

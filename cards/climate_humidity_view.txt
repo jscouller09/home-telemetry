@@ -1,0 +1,23 @@
+type: history-graph
+entities:
+  - entity: sensor.house_humidity
+    name: House average
+  - entity: sensor.lounge_temperature_humidity_sensor_humidity
+    name: Lounge
+  - entity: sensor.study_temperature_humidity_sensor_humidity
+    name: Study
+  - entity: sensor.nursery_temperature_humidity_sensor_humidity
+    name: Nursery
+  - entity: sensor.bedroom_temperature_humidity_sensor_humidity
+    name: Bedroom
+  - entity: sensor.bassinet_temperature_humidity_sensor_humidity
+    name: Bassinet
+  - entity: sensor.temperature_humidity_sensor_873e_humidity
+    name: Nappy Cart
+  - entity: sensor.dining_room_temperature_humidity_sensor_humidity
+    name: Dining Room
+  - entity: sensor.bathroom_temperature_humidity_sensor_humidity
+    name: Bathroom
+  - entity: climate.heatpump
+title: Humidity
+hours_to_show: 12

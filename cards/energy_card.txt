@@ -1,0 +1,47 @@
+type: vertical-stack
+title: Electricity
+cards:
+  - type: glance
+    title: Today
+    entities:
+      - entity: sensor.daily_energy_cost
+        name: Spent
+      - entity: sensor.daily_energy_off_peak
+        name: Off-peak use
+      - entity: sensor.daily_energy_off_peak_percentage
+        name: Off-peak use
+      - entity: sensor.daily_energy_peak
+        name: Peak use
+  - type: custom:card-templater
+    card:
+      type: glance
+      columns: 3
+      title_template: >
+        Current bill ({{
+        state_attr('sensor.bill_energy_peak','last_reset')|as_timestamp|timestamp_custom('%d
+        %b', local=True) }} - {{
+        state_attr('calendar.electricity_billing_dates','start_time')|as_timestamp|timestamp_custom('%d
+        %b', local=True) }})
+      entities:
+        - entity: sensor.bill_energy_off_peak
+          name: Off-peak use
+        - entity: sensor.bill_energy_off_peak_percentage
+          name: Off-peak use
+        - entity: sensor.bill_energy_peak
+          name: Peak use
+        - entity: sensor.bill_energy_cost
+          name: Spent
+        - entity: sensor.bill_days_remaining
+          name: Remaining
+        - entity: sensor.bill_forecast_cost
+          name: Forecast
+  - type: gauge
+    entity: sensor.electricity_meter_power_consumption
+    unit: W
+    needle: true
+    severity:
+      green: 0
+      yellow: 1500
+      red: 3000
+    max: 5000
+    name: Current power use
