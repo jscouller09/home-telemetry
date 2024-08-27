@@ -60,20 +60,20 @@ def __data_received(xbee_msg):
         # let waiting thread know we got the correct reply
         waiter_reply.set()
         # extract supply voltage measurement if present
-        match = re.search('SUPPLY\: (-?\d{1,2}.\d{3})V', data)
+        match = re.search('SUPPLY: (-?\d{1,2}.\d{3})V', data)
         if match:
             global supply_v
             supply_v = match.group(1)
         # extract other measurements if present
-        match = re.search('TEMP\: (-?\d{1,2}.\d{1,2})°C', data)
+        match = re.search('TEMP: (-?\d{1,2}.\d{1,2})°C', data)
         if match:
             global temp
             temp = match.group(1)
-        match = re.search('PRESSURE\: (-?\d{1,3}.\d{1,3})kPa', data)
+        match = re.search('PRESSURE: (-?\d{1,3}.\d{1,3})kPa', data)
         if match:
             global pres
             pres = match.group(1)
-        match = re.search('HUMIDITY\: (-?\d{1,3}.\d{1,2})%', data)
+        match = re.search('HUMIDITY: (-?\d{1,3}.\d{1,2})%', data)
         if match:
             global hum
             hum = match.group(1)
